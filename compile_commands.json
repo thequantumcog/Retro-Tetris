@@ -1,0 +1,38 @@
+[
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-c",
+      "-o",
+      "project",
+      "block.cpp"
+    ],
+    "directory": "/home/ar0177417/Downloads/UNI/OOP/project",
+    "file": "/home/ar0177417/Downloads/UNI/OOP/project/block.cpp",
+    "output": "/home/ar0177417/Downloads/UNI/OOP/project/project"
+  },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-c",
+      "-o",
+      "project",
+      "main.cpp"
+    ],
+    "directory": "/home/ar0177417/Downloads/UNI/OOP/project",
+    "file": "/home/ar0177417/Downloads/UNI/OOP/project/main.cpp",
+    "output": "/home/ar0177417/Downloads/UNI/OOP/project/project"
+  },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-c",
+      "-o",
+      "project",
+      "tetris.cpp"
+    ],
+    "directory": "/home/ar0177417/Downloads/UNI/OOP/project",
+    "file": "/home/ar0177417/Downloads/UNI/OOP/project/tetris.cpp",
+    "output": "/home/ar0177417/Downloads/UNI/OOP/project/project"
+  }
+]
