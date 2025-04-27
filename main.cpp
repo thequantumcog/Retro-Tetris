@@ -1,5 +1,5 @@
 #include "raylib.h"
-#include "block.cpp"
+#include "grid.cpp"
 #include "header.h"
 #include "tetris.cpp"
 
@@ -11,33 +11,33 @@ Shape * getRandomPiece(int **g){
     Shape * piece = nullptr;
     switch(random){
         case 0:{piece = new Tetrimon_I(g);}
-        break;
+            break;
         case 1:{piece = new Tetrimon_L(g);}
-        break;
+            break;
         case 2:{piece = new Tetrimon_J(g);}
-        break;
+            break;
         case 3:{piece = new Tetrimon_Z(g);}
-        break;
+            break;
         case 4:{piece = new Tetrimon_T(g);}
-        break;
+            break;
         case 5:{piece = new Tetrimon_S(g);}
-        break;
+            break;
         case 6:{piece = new Tetrimon_O(g);}
-        break;
+            break;
     }
     return piece;
-    }
+}
 int main(void)
 {
-    Grid g(22,15,45);
+    Grid g(VerticalLines,HorizontalLines,45);
     // Tetrimon * t = new Tetrimon_I(g.getGrid());
 
     InitWindow(screenWidth, screenHeight, "Schrodinger's Tetris");
 
     SetTargetFPS(60);
 
-    bool dropped=1;
     Shape * t = getRandomPiece(g.getGrid());
+    bool dropped=1;
     //Tetrimon * t = nullptr;
     while (!WindowShouldClose())
     {   
@@ -48,13 +48,13 @@ int main(void)
         t->drop(dropped);
 
         //LOGIC HERE
-        if(IsKeyPressed(KEY_DOWN))
+        if(IsKeyPressed(KEY_DOWN) || IsKeyPressed(KEY_J))
             t->move_down();
-        if(IsKeyPressed(KEY_RIGHT))
+        if(IsKeyPressed(KEY_RIGHT) || IsKeyPressed(KEY_L))
             t->move_right();
-        if(IsKeyPressed(KEY_LEFT))
+        if(IsKeyPressed(KEY_LEFT) || IsKeyPressed(KEY_H))
             t->move_left();
-        if(IsKeyPressed(KEY_UP))
+        if(IsKeyPressed(KEY_UP) || IsKeyPressed(KEY_K))
             t->rotate();
         t->draw();
         // DRAWINGS ARE HERE
