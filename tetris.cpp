@@ -1,6 +1,7 @@
 #include "header.h"
 #include <iostream>
 using namespace std;
+const int Tetris_Matrix_Max =4;
 class Shape{
 protected:
     int **tetris;
@@ -30,13 +31,13 @@ public:
         tetris = arr;
     }
     void clear_previous(){
-        for(int i = y; i < y + 4; ++i)
-            for(int j = x; j < x + 4; ++j)
+        for(int i = y; i < y + Tetris_Matrix_Max && i < VerticalLines; ++i)
+            for(int j = x; j < x + Tetris_Matrix_Max && j < Tetris_Matrix_Max; ++j)
                 if(grid[i][j])
                     grid[i][j] = 0;
     }
     void move_down(){
-        if(y <19){
+        if(y <VerticalLines){
         clear_previous();
         y++;}
     }
@@ -51,24 +52,23 @@ public:
     }
     void draw(){
         cout << x << " " << y << endl;
-        for(int i=y;i<y+4;i++){
-            for(int j=x;j<4+x;j++){
+        for(int i=y;i<y+Tetris_Matrix_Max && i<VerticalLines;i++){
+            for(int j=x;j<x+Tetris_Matrix_Max && j < HorizontalLines;j++){
                 if(tetris[i-y][j-x])
                     grid[i][j] = tetris[i-y][j-x];
             }
         }
     }
     void drop(bool &dropped){
-        if(!dropped){
+        if(dropped){
         gravityCounter++;
         if(gravityCounter > gravitySpeed){
             clear_previous();
-
             grid[y][x] = 0;
-            y++;
+            if(y<VerticalLines) y++;
             gravityCounter=0;
         }
-        if(y>=19){
+        if(y>VerticalLines){
             make_solid(dropped);
         }
 
