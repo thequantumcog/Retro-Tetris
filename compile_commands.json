@@ -17,6 +17,18 @@
       "-c",
       "-o",
       "project",
+      "grid.cpp"
+    ],
+    "directory": "/home/ar0177417/Downloads/UNI/OOP/project",
+    "file": "/home/ar0177417/Downloads/UNI/OOP/project/grid.cpp",
+    "output": "/home/ar0177417/Downloads/UNI/OOP/project/project"
+  },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-c",
+      "-o",
+      "project",
       "main.cpp"
     ],
     "directory": "/home/ar0177417/Downloads/UNI/OOP/project",

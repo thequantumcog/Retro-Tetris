@@ -1,12 +1,12 @@
 #include "raylib.h"
-#include "grid.cpp"
 #include "header.h"
-#include "tetris.cpp"
+#include "tetris.h"
 
 const int screenWidth = 1920;
 const int screenHeight = 1080;
 
-Shape * getRandomPiece(int **g){
+Shape * getRandomPiece(Grid * g){
+
     int random = GetRandomValue(0, 6);
     Shape * piece = nullptr;
     switch(random){
@@ -27,38 +27,36 @@ Shape * getRandomPiece(int **g){
     }
     return piece;
 }
-int main(void)
-{
-    Grid g(VerticalLines,HorizontalLines,45);
-    // Tetrimon * t = new Tetrimon_I(g.getGrid());
+int main(){    
+        
 
     InitWindow(screenWidth, screenHeight, "Schrodinger's Tetris");
-
     SetTargetFPS(60);
-
-    Shape * t = getRandomPiece(g.getGrid());
-    bool dropped=1;
-    //Tetrimon * t = nullptr;
+    Grid g(VerticalLines,HorizontalLines,45);
+    Shape * t = getRandomPiece(&g);
+    // Shape * t = new Tetrimon_I(&g);
+    t->setDrop(1);
     while (!WindowShouldClose())
     {   
-        // if(!dropped){
-        // t = getRandomPiece(g.getGrid());
-        //     dropped=1;
-        // }
-        t->drop(dropped);
+        if(!t->getDrop()){
+            t = getRandomPiece(&g);
+            // t = new Tetrimon_I(&g);
+            t->setDrop(1);
+        }
+        t->drop();
 
         //LOGIC HERE
-        if(IsKeyPressed(KEY_DOWN) || IsKeyPressed(KEY_J))
-            t->move_down();
-        if(IsKeyPressed(KEY_RIGHT) || IsKeyPressed(KEY_L))
-            t->move_right();
-        if(IsKeyPressed(KEY_LEFT) || IsKeyPressed(KEY_H))
-            t->move_left();
-        if(IsKeyPressed(KEY_UP) || IsKeyPressed(KEY_K))
+        if( IsKeyPressed(KEY_DOWN) ||IsKeyPressedRepeat(KEY_DOWN) || IsKeyPressed(KEY_J))
+            t->move(0,1);
+        if( IsKeyPressed(KEY_RIGHT) || IsKeyPressedRepeat(KEY_RIGHT) || IsKeyPressed(KEY_L))
+            t->move(1,0);
+        if( IsKeyPressed(KEY_LEFT) || IsKeyPressedRepeat(KEY_LEFT)  || IsKeyPressed(KEY_H))
+            t->move(-1,0);
+        if(IsKeyPressed(KEY_UP) || IsKeyPressedRepeat(KEY_UP)  || IsKeyPressed(KEY_K))
             t->rotate();
-        t->draw();
         // DRAWINGS ARE HERE
         BeginDrawing();
+        t->draw();
         g.draw();
         EndDrawing();
     }
