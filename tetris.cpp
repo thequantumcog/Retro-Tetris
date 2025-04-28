@@ -1,181 +1,140 @@
+#include "tetris.h"
 #include "header.h"
-#include <iostream>
-using namespace std;
-const int Tetris_Matrix_Max =4;
-class Shape{
-protected:
-    int **tetris;
-    int **grid;
-    int x=1,y=1;
+#include <raylib.h>
 
-    int gravityCounter=0;
-    int gravitySpeed=30;
-public:
-    Shape(int **g): grid(g){}
-    virtual void rotate(){
-        for(int i=y;i<4+y;i++){
-            for(int j=x;j<4+x;j++){
-                if(tetris[i-y][j-x])
-                    grid[i][j] = 0;
-            }
-        }
-        int ** arr = new int*[4];
-        for(int i=0;i<4;i++){
-            arr[i] = new int[4]{};
-            for(int j=0;j<4;j++){
-                arr[i][j] = tetris[j][3-i];
+// Private Functions
+void Shape::clear_previous(){
+    for(int i=0;i<TETRIMON_MAX_BLOCKS;i++){
+        grid->getGrid()[(int)tetris[i].y + yShift][(int)tetris[i].x + xShift].setState(0);
+    }
+}
+bool Shape::would_collide(Vector2 * tetris,int inc_x, int inc_y){
+for (int i = 0; i < TETRIMON_MAX_BLOCKS; i++) {
+        int goto_x = xShift + tetris[i].x + inc_x;
+        int goto_y = yShift + tetris[i].y + inc_y;
 
-            }
-        }
-        delete[] tetris;
-        tetris = arr;
+        if (goto_x < 0 || goto_x >= HorizontalLines || goto_y < 0 || goto_y >= VerticalLines) return true;
+        if ((*grid)[goto_y][goto_x].getState() == 3) return true;
     }
-    void clear_previous(){
-        for(int i = y; i < y + Tetris_Matrix_Max && i < VerticalLines; ++i)
-            for(int j = x; j < x + Tetris_Matrix_Max && j < Tetris_Matrix_Max; ++j)
-                if(grid[i][j])
-                    grid[i][j] = 0;
+    return false;
+}
+bool Shape::check_collision_X(){
+    for (int i = 0; i < TETRIMON_MAX_BLOCKS; i++) {
+        if(xShift + tetris[i].x + 1 >= HorizontalLines) return 1;
+        if ((*grid)[yShift + tetris[i].y][xShift + (int)tetris[i].x + 1].getState() != 0) return 1;
     }
-    void move_down(){
-        if(y <VerticalLines){
-        clear_previous();
-        y++;}
+    return 0;
+}
+Shape::Shape(Grid * g): grid(g){}
+
+void Shape::draw(){
+    if(dropped)
+    for(int i=0;i<TETRIMON_MAX_BLOCKS;i++){
+        // cout << tetris[i].x << " " << tetris[i].y << endl;
+        (*grid)[tetris[i].y + yShift][(int)tetris[i].x + xShift].set(1,tetrimon_color);
     }
-    void move_right(){
-        clear_previous();
-        x++;
+    //cout << (*grid)[19][0].getState() << endl;
+}
+void Shape::move(int inc_x, int inc_y){
+   if (!dropped) return;
+        clear_previous();  
+    if (!would_collide(tetris,inc_x, inc_y)) {
+        xShift += inc_x;
+        yShift += inc_y;
     }
-    void move_left(){
-        if(x>0){
-        clear_previous();
-        x--;}
+    else if (inc_y>0){
+        make_solid();
     }
-    void draw(){
-        cout << x << " " << y << endl;
-        for(int i=y;i<y+Tetris_Matrix_Max && i<VerticalLines;i++){
-            for(int j=x;j<x+Tetris_Matrix_Max && j < HorizontalLines;j++){
-                if(tetris[i-y][j-x])
-                    grid[i][j] = tetris[i-y][j-x];
-            }
-        }
+}
+
+void Shape::rotate(){
+    bool collision=0;
+    clear_previous();
+    Vector2* v = new Vector2[4]{};
+    for(int i=0;i<TETRIMON_MAX_BLOCKS;i++){
+        v[i].x = tetris[i].y;
+        v[i].y = 3-tetris[i].x;
     }
-    void drop(bool &dropped){
-        if(dropped){
+    if(would_collide(v,0, 0)){
+        collision=1;
+        delete[] v;
+        return;
+    }
+    for(int i=0;i<TETRIMON_MAX_BLOCKS;i++){
+        tetris[i] = v[i];
+    }
+    if(!collision) delete[] v;
+
+}
+void Shape::drop(){
+    if(dropped){
         gravityCounter++;
         if(gravityCounter > gravitySpeed){
             clear_previous();
-            grid[y][x] = 0;
-            if(y<VerticalLines) y++;
+            if(!would_collide(tetris,0, 1)) yShift++;
+            else make_solid();
             gravityCounter=0;
         }
-        if(y>VerticalLines){
-            make_solid(dropped);
-        }
+    }
+}
 
-    }
+void Shape::make_solid(){
+    for(int i=0;i<TETRIMON_MAX_BLOCKS;i++){
+        (*grid)[yShift+(int)tetris[i].y][xShift+(int)tetris[i].x].set(3,tetrimon_color);
     }
 
-    void make_solid(bool &dropped){
-        for(int i=y;i<4+y;i++){
-            for(int j=x;j<4+x;j++){
-                if(tetris[i-y][j-x])
-                    grid[i][j] = 3;
-            }
-            dropped=0;
-    }
-    }
-};
-class Tetrimon_I: public Shape{
-    int rotated=0,maxRotations=1;
-    int length=4;
-public:
-    Tetrimon_I(int **g): Shape(g){
-        y=1;
-        tetris = new int*[4];
-        for(int i=0;i<4;i++){
-            tetris[i] = new int[4]{};
-            tetris[i][x] = 1;
-        }
-    }
-};
-class Tetrimon_L: public Shape{
-public:
-    Tetrimon_L(int **g): Shape(g){
-        tetris = new int*[4];
-        for(int i=0;i<4;i++){
-            tetris[i] = new int[4]{};
-        }
-        tetris[0][0] = 1;
-        tetris[0][1] = 1;
-        tetris[0][2] = 1;
-        tetris[1][2] = 1;
-    } 
+    dropped=0;
+}
+Tetrimon_I::Tetrimon_I(Grid * g): Shape(g){
+    tetrimon_color = SKYBLUE;
+    tetris[0] = {0,0};
+    tetris[1] = {0,1};
+    tetris[2] = {0,2};
+    tetris[3] = {0,3};
+    //y=1;
+}
+Tetrimon_L::Tetrimon_L(Grid * g): Shape(g){
+    tetrimon_color = ORANGE;
+    tetris[0] = {0,0};
+    tetris[1] = {0,1};
+    tetris[2] = {0,2};
+    tetris[3] = {1,2};
+} 
 
-};
-class Tetrimon_J: public Shape{
-public:
-    Tetrimon_J(int **g): Shape(g){
-        tetris = new int*[4];
-        for(int i=0;i<4;i++){
-            tetris[i] = new int[4]{};
-        }
-        tetris[0][2] = 1;
-        tetris[1][0] = 1;
-        tetris[1][1] = 1;
-        tetris[1][2] = 1;
-    } 
+Tetrimon_J::Tetrimon_J(Grid * g): Shape(g){
+    tetrimon_color = BLUE;
+    tetris[0] = {1,0};
+    tetris[1] = {1,1};
+    tetris[2] = {1,2};
+    tetris[3] = {0,2};
+} 
 
-};
-class Tetrimon_Z: public Shape{
-public:
-    Tetrimon_Z(int **g): Shape(g){
-        tetris = new int*[4];
-        for(int i=0;i<4;i++){
-            tetris[i] = new int[4]{};
-        }
-        tetris[0][1] =1;
-        tetris[1][1] = 1;
-        tetris[1][0] = 1;
-        tetris[2][0] = 1;
-    } 
-};
-class Tetrimon_S: public Shape{
-public:
-    Tetrimon_S(int **g): Shape(g){
-        tetris = new int*[4];
-        for(int i=0;i<4;i++){
-            tetris[i] = new int[4]{};
-        }
-        tetris[0][0] =1;
-        tetris[1][0] = 1;
-        tetris[1][1] = 1;
-        tetris[2][1] = 1;
-    } 
-};
-class Tetrimon_T: public Shape{
-public:
-    Tetrimon_T(int **g): Shape(g){
-        tetris = new int*[4];
-        for(int i=0;i<4;i++){
-            tetris[i] = new int[4]{};
-        }
-        tetris[0][0] =1;
-        tetris[0][1] = 1;
-        tetris[0][2] = 1;
-        tetris[1][1] = 1;
-    } 
-};
-class Tetrimon_O: public Shape{
-public:
-    Tetrimon_O(int **g): Shape(g){
-        tetris = new int*[4];
-        for(int i=0;i<4;i++){
-            tetris[i] = new int[4]{};
-        }
-        tetris[0][0] =1;
-        tetris[1][0] = 1;
-        tetris[0][1] = 1;
-        tetris[1][1] = 1;
-    } 
-};
+Tetrimon_Z::Tetrimon_Z(Grid * g): Shape(g){
+    tetrimon_color = RED;
+    tetris[0] = {0,0};
+    tetris[1] = {1,0};
+    tetris[2] = {1,1};
+    tetris[3] = {2,1};
+} 
+Tetrimon_S::Tetrimon_S(Grid * g): Shape(g){
+    tetrimon_color = GREEN;
+    tetris[0] = {1,0};
+    tetris[1] = {2,0};
+    tetris[2] = {0,1};
+    tetris[3] = {1,1};
+} 
+Tetrimon_T::Tetrimon_T(Grid * g): Shape(g){
+    tetrimon_color =  PURPLE;
+    tetris[0] = {0,0};
+    tetris[1] = {1,0};
+    tetris[2] = {2,0};
+    tetris[3] = {1,1};
+} 
+Tetrimon_O::Tetrimon_O(Grid * g): Shape(g){
+    tetrimon_color = YELLOW;
+    tetris[0] = {0,0};
+    tetris[1] = {0,1};
+    tetris[2] = {1,0};
+    tetris[3] = {1,1};
+} 
 
