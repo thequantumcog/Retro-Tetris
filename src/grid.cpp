@@ -29,7 +29,7 @@ Cell * Grid::operator[](int x){
 bool Grid::is_line_full(int i){
     int count =0;
     for(int j=0;j<cols;j++){
-        if(actual_grid[i][j].value() == 3 ) count++;
+        if(actual_grid[i][j].value() == 2 ) count++;
     }
     if(count == cols){
         return 1;

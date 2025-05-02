@@ -105,6 +105,7 @@ void Game::draw(){
     BeginDrawing();
         ClearBackground(WHITE);
         DrawTexture(background, 0, 0, WHITE);
+        current_piece->draw_shadow();
         current_piece->draw();
     grid.draw(block_textures);
     draw_info();

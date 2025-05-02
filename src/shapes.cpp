@@ -4,8 +4,15 @@
 using namespace std;
 
 void Shape::erase_current(){
+    // erase block
     for(int i=0;i<TETROMINO_MAX_BLOCKS;i++){
         grid[tetris[cur_rotation][i].y + yShift][(int)tetris[cur_rotation][i].x + xShift].set_cell(0);
+    }
+    // erase shadow
+
+    for(int i=0;i<TETROMINO_MAX_BLOCKS;i++){
+        if(grid[tetris[cur_rotation][i].y + yShadow + yShift][(int)tetris[cur_rotation][i].x+xShift].value() != 2)
+            grid[tetris[cur_rotation][i].y + yShadow + yShift][(int)tetris[cur_rotation][i].x+xShift].set_cell(0);
     }
 }
 // Private Functions
@@ -19,6 +26,7 @@ bool Shape::would_collide(Piece& cur_orient,int inc_x=0, int inc_y=0){
     }
     return false;
 }
+
 // Public Functions
 Shape::Shape(Grid & g): grid(g){
     correction_values[0] = {0,0};
@@ -29,7 +37,6 @@ Shape::Shape(Grid & g): grid(g){
 
 void Shape::draw(){
     if(dropped){
-        //cerr << tetris[0][0].x << " " << tetris[0][0].y << endl;
         for(int i=0;i<TETROMINO_MAX_BLOCKS;i++){
             grid[tetris[cur_rotation][i].y + yShift][(int)tetris[cur_rotation][i].x + xShift].set(1,tetrimon_color);
         }
@@ -41,6 +48,7 @@ bool Shape::move(int inc_x, int inc_y){
     if (!would_collide(tetris[cur_rotation],inc_x, inc_y)) {
         xShift += inc_x;
         yShift += inc_y;
+        if(inc_y) yShadow -=inc_y;
         return 1;
     }
     // agar block neeche jaane ki koshish kar raha hai
@@ -54,15 +62,16 @@ void Shape::draw_shadow(){
         if(grid[tetris[cur_rotation][i].y + yShadow + yShift][(int)tetris[cur_rotation][i].x].value() != 2)
             grid[tetris[cur_rotation][i].y + yShadow + yShift][(int)tetris[cur_rotation][i].x].set_cell(0);
     }
+    //yShadow=0;
+    // while(!would_collide(tetris[cur_rotation],0,yShadow) && yShadow > 0)
+    //     yShadow -=1;
     while(!would_collide(tetris[cur_rotation],0,yShadow+1))
         yShadow +=1;
-
-    while(would_collide(tetris[cur_rotation],0,yShadow))
+    while(would_collide(tetris[cur_rotation],0,yShadow) && yShadow > 0)
         yShadow -=1;
-
     for(int i=0;i<TETROMINO_MAX_BLOCKS;i++){
-        if(grid[tetris[cur_rotation][i].y + yShadow + yShift][(int)tetris[cur_rotation][i].x].value() != 2)
-            grid[tetris[cur_rotation][i].y + yShadow + yShift][(int)tetris[cur_rotation][i].x].set(3,tetrimon_color);
+        if(grid[tetris[cur_rotation][i].y + yShadow + yShift][(int)tetris[cur_rotation][i].x+xShift].value() != 2)
+            grid[tetris[cur_rotation][i].y + yShadow + yShift][(int)tetris[cur_rotation][i].x+xShift].set(3,tetrimon_color);
     }
 }
 void Shape::increase_speed(){
@@ -84,7 +93,7 @@ void Shape::move_down(){
         gravityCounter++;
         if(gravityCounter > gravitySpeed){
             erase_current();
-            if(!would_collide(tetris[cur_rotation],0, 1)) yShift++;
+            if(!would_collide(tetris[cur_rotation],0, 1)) yShift++,yShadow--;
             else solidify();
             gravityCounter=0;
         }
