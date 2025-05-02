@@ -2,49 +2,57 @@
   {
     "arguments": [
       "/usr/bin/g++",
+      "-Wall",
+      "-O2",
       "-c",
       "-o",
-      "project",
-      "block.cpp"
+      "obj/game.o",
+      "src/game.cpp"
     ],
     "directory": "/home/ar0177417/Downloads/UNI/OOP/project",
-    "file": "/home/ar0177417/Downloads/UNI/OOP/project/block.cpp",
-    "output": "/home/ar0177417/Downloads/UNI/OOP/project/project"
+    "file": "/home/ar0177417/Downloads/UNI/OOP/project/src/game.cpp",
+    "output": "/home/ar0177417/Downloads/UNI/OOP/project/obj/game.o"
   },
   {
     "arguments": [
       "/usr/bin/g++",
+      "-Wall",
+      "-O2",
       "-c",
       "-o",
-      "project",
-      "grid.cpp"
+      "obj/grid.o",
+      "src/grid.cpp"
     ],
     "directory": "/home/ar0177417/Downloads/UNI/OOP/project",
-    "file": "/home/ar0177417/Downloads/UNI/OOP/project/grid.cpp",
-    "output": "/home/ar0177417/Downloads/UNI/OOP/project/project"
+    "file": "/home/ar0177417/Downloads/UNI/OOP/project/src/grid.cpp",
+    "output": "/home/ar0177417/Downloads/UNI/OOP/project/obj/grid.o"
   },
   {
     "arguments": [
       "/usr/bin/g++",
+      "-Wall",
+      "-O2",
       "-c",
       "-o",
-      "project",
-      "main.cpp"
+      "obj/main.o",
+      "src/main.cpp"
     ],
     "directory": "/home/ar0177417/Downloads/UNI/OOP/project",
-    "file": "/home/ar0177417/Downloads/UNI/OOP/project/main.cpp",
-    "output": "/home/ar0177417/Downloads/UNI/OOP/project/project"
+    "file": "/home/ar0177417/Downloads/UNI/OOP/project/src/main.cpp",
+    "output": "/home/ar0177417/Downloads/UNI/OOP/project/obj/main.o"
   },
   {
     "arguments": [
       "/usr/bin/g++",
+      "-Wall",
+      "-O2",
       "-c",
       "-o",
-      "project",
-      "tetris.cpp"
+      "obj/shapes.o",
+      "src/shapes.cpp"
     ],
     "directory": "/home/ar0177417/Downloads/UNI/OOP/project",
-    "file": "/home/ar0177417/Downloads/UNI/OOP/project/tetris.cpp",
-    "output": "/home/ar0177417/Downloads/UNI/OOP/project/project"
+    "file": "/home/ar0177417/Downloads/UNI/OOP/project/src/shapes.cpp",
+    "output": "/home/ar0177417/Downloads/UNI/OOP/project/obj/shapes.o"
   }
 ]
