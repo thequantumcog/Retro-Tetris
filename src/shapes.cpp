@@ -3,23 +3,8 @@
 #include <iostream>
 using namespace std;
 
-void Shape::erase_current(){
-    for(int i=0;i<TETROMINO_MAX_BLOCKS;i++){
-        grid[tetris[cur_rotation][i].y + yShift][(int)tetris[cur_rotation][i].x + xShift].set_cell(0);
-    }
-}
-// Private Functions
-bool Shape::would_collide(Piece& cur_orient,int inc_x=0, int inc_y=0){
-    for (int i = 0; i < TETROMINO_MAX_BLOCKS; i++) {
-        int goto_x = xShift + cur_orient[i].x + inc_x;
-        int goto_y = yShift + cur_orient[i].y + inc_y;
+int Shape::gravitySpeed = 30;
 
-        if (goto_x < 0 || goto_x >= grid.getBounds().x || goto_y < 0 || goto_y >= grid.getBounds().y) return true;
-        if (grid[goto_y][goto_x].value() == 3) return true;
-    }
-    return false;
-}
-// Public Functions
 Shape::Shape(Grid & g): grid(g){
     correction_values[0] = {0,0};
     correction_values[1] = {0,0};
@@ -27,14 +12,29 @@ Shape::Shape(Grid & g): grid(g){
     max_rotations=4;
 }
 
-void Shape::draw(){
+void Shape::draw_on_grid(){
     if(dropped){
-        //cerr << tetris[0][0].x << " " << tetris[0][0].y << endl;
         for(int i=0;i<TETROMINO_MAX_BLOCKS;i++){
             grid[tetris[cur_rotation][i].y + yShift][(int)tetris[cur_rotation][i].x + xShift].set(1,tetrimon_color);
         }
     }
 }
+void Shape::erase_current(){
+    for(int i=0;i<TETROMINO_MAX_BLOCKS;i++){
+        grid[tetris[cur_rotation][i].y + yShift][(int)tetris[cur_rotation][i].x + xShift].set_cell(0);
+    }
+}
+bool Shape::would_collide(Piece& cur_orient,int inc_x=0, int inc_y=0){
+    for (int i = 0; i < TETROMINO_MAX_BLOCKS; i++) {
+        int goto_x = xShift + cur_orient[i].x + inc_x;
+        int goto_y = yShift + cur_orient[i].y + inc_y;
+
+        if (goto_x < 0 || goto_x >= grid.getBounds().x || goto_y < 0 || goto_y >= grid.getBounds().y) return true;
+        if (grid[goto_y][goto_x].value() == 2) return true;
+    }
+    return false;
+}
+
 bool Shape::move(int inc_x, int inc_y){
     if (!dropped) return 0;
     erase_current();  
@@ -84,11 +84,10 @@ void Shape::hard_drop(){
 void Shape::solidify(){
     for(int i=0;i<TETROMINO_MAX_BLOCKS;i++){
         int abs_y = yShift + tetris[cur_rotation][i].y, abs_x = xShift+tetris[cur_rotation][i].x;
-        grid[abs_y][abs_x].set(3,tetrimon_color+1); // +1 basically means to add borders
+        grid[abs_y][abs_x].set(2,tetrimon_color+1); // +1 basically means to add borders
     }
     dropped=0;
 }
-// GETTER SETTERS
 void Shape::drop_piece(bool drop){
     dropped = drop;
 }

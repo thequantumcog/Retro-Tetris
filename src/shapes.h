@@ -21,23 +21,21 @@ public:
 class Shape{
 protected:
     Piece tetris[4];
-    int cur_rotation;
-    int max_rotations;
+    int cur_rotation,max_rotations;
     Grid& grid;
     int tetrimon_color;
     int preview_index;
     int xShift=0,yShift=0;
     int gravityCounter=0;
-    int gravitySpeed=30;
+    static int gravitySpeed;
     bool dropped=0;
     Vector2 correction_values[2];
 
 public:
-    //TODO: FIX THIS MESS
     Shape(Grid & g);
     void rotate();
     bool move(int x, int y);
-    void draw();
+    void draw_on_grid();
     void erase_current();
     void move_down();
     void solidify();
@@ -46,10 +44,9 @@ public:
     void drop_piece(bool drop);
     void hard_drop();
     void increase_speed();
+    // getters
     Vector2 * offset();
-    // gets current position
     Vector2 pos();
-    // gets index of texture
     int getSpriteNo();
 };
 class Tetrimon_I: public Shape{

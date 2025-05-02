@@ -17,10 +17,10 @@ Grid::Grid(int * info) : game_score(info[0]), lines_completed(info[1]), level(in
 int  Grid::getBlockSize(){
     return BlockSize;
 }
-Cell& Grid::getGridBlock(int x, int y){
-    return actual_grid[x][y];
-
-}
+// Cell& Grid::getGridBlock(int x, int y){
+//     return actual_grid[x][y];
+//
+// }
 Cell * Grid::operator[](int x){
     return actual_grid[x];
 }
@@ -29,7 +29,7 @@ Cell * Grid::operator[](int x){
 bool Grid::is_line_full(int i){
     int count =0;
     for(int j=0;j<cols;j++){
-        if(actual_grid[i][j].value() == 3 ) count++;
+        if(actual_grid[i][j].value() == 2 ) count++;
     }
     if(count == cols){
         return 1;
@@ -51,6 +51,21 @@ Vector2 Grid::getBounds(){
     return {(float)cols,(float)rows};
 }
 
+bool Grid::level_updates(){
+    for(int i=0;i<rows;i++){
+        if(is_line_full(i)){
+            delete_line(i);
+            game_score +=100;
+            lines_completed+=1;
+        }
+    }
+    if(lines_completed > level_threshold){
+        level+=1;
+        level_threshold += 10;
+        return 1;
+    }
+    return 0;
+}
 
 Grid::~Grid(){
     for(int i = 0; i < rows; i++)
@@ -65,18 +80,9 @@ void Grid::draw(Texture2D * block_textures){
             if(actual_grid[i][j].value() == 1){
                 DrawTextureV(block_textures[actual_grid[i][j].getColor()],pos, WHITE);
             }
-            else if(actual_grid[i][j].value() == 3)  DrawTextureV(block_textures[actual_grid[i][j].getColor()], pos,WHITE);
+            else if(actual_grid[i][j].value() == 2)  DrawTextureV(block_textures[actual_grid[i][j].getColor()], pos,WHITE);
         }
         // TODO: SHouldnt belong here
-        if(is_line_full(i)){
-            delete_line(i);
-            game_score +=100;
-            lines_completed+=1;
-        }
-        if(lines_completed > level_threshold){
-            level+=1;
-            level_threshold += 10;
-        }
 
     }
 }

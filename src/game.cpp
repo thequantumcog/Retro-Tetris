@@ -7,12 +7,18 @@ Game::Game(): grid(info){
     SetTargetFPS(60);
     load_textures();
     munro = LoadFont("assets/pixelated.ttf");
+    info[0] = 0;
+    info[1] = 0;
+    info[2] = 1;
 }
 void Game::run_game(){
     holding_piece = nullptr;
     current_piece = create_a_random_piece();
     for(int i=0;i<NEXT_PIECES_COUNT;i++) next_pieces_array[i] = create_a_random_piece();
     while (!WindowShouldClose()) {
+        bool level_changed = grid.level_updates();
+        if(level_changed)
+            current_piece->increase_speed();
         if(!current_piece->is_being_dropped()){
             drop_next_piece();
         }
@@ -103,9 +109,9 @@ void Game::draw_info(){
 }
 void Game::draw(){
     BeginDrawing();
-        ClearBackground(WHITE);
-        DrawTexture(background, 0, 0, WHITE);
-        current_piece->draw();
+    ClearBackground(WHITE);
+    DrawTexture(background, 0, 0, WHITE);
+    current_piece->draw_on_grid();
     grid.draw(block_textures);
     draw_info();
     EndDrawing();
