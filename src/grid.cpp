@@ -47,6 +47,9 @@ void Grid::delete_line(int i){
         actual_grid[0][j].set_cell(0);
     }
 }
+Vector2 Grid::getBounds(){
+    return {(float)cols,(float)rows};
+}
 
 
 Grid::~Grid(){

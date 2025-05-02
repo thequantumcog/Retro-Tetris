@@ -5,9 +5,24 @@
 #include "grid.h"
 using namespace std;
 const int TETROMINO_MAX_BLOCKS =4;
+class Piece{
+private:
+    Vector2 actual_piece[4];
+public:
+    Vector2& operator[](int i){
+        return actual_piece[i];
+    }
+    void operator=(Vector2 arr[4]){
+        for(int i=0;i<TETROMINO_MAX_BLOCKS;i++){
+            actual_piece[i] = arr[i];
+        }
+    }
+};
 class Shape{
 protected:
-    Vector2 tetris[4];
+    Piece tetris[4];
+    int cur_rotation;
+    int max_rotations;
     Grid& grid;
     int tetrimon_color;
     int preview_index;
@@ -26,7 +41,7 @@ public:
     void erase_current();
     void move_down();
     void solidify();
-    bool would_collide(Vector2 * tetris,int dx,int dy);
+    bool would_collide(Piece& cur_orient,int dx,int dy);
     bool is_being_dropped();
     void drop_piece(bool drop);
     void hard_drop();
