@@ -36,12 +36,13 @@ class Grid {
 public:
     Grid(int * info);
     Cell ** getGrid();
-    Cell& getGridBlock(int x, int y);
+    // Cell& getGridBlock(int x, int y);
     int  getBlockSize();
     Cell * operator[](int x);
     bool is_line_full(int i);
     void delete_line(int i);
     Vector2 getBounds();
+    bool level_updates();
 
     ~Grid();
 
