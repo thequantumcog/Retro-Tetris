@@ -1,7 +1,7 @@
 #ifndef GRID_H
 #define GRID_H
-#include "header.h"
 #include <iostream>
+#include "raylib.h"
 using namespace std;
 class Cell{
     int color;
@@ -41,6 +41,7 @@ public:
     Cell * operator[](int x);
     bool is_line_full(int i);
     void delete_line(int i);
+    Vector2 getBounds();
 
     ~Grid();
 

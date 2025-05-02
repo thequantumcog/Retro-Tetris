@@ -85,14 +85,16 @@ void Game::update_next_pieces(){
 }
 void Game::draw_info(){
         Vector2 abs_pos[4];
-        abs_pos[0] = {1345 + next_pieces_array[0]->offset()[0].x + 150 + next_pieces_array[0] -> offset()[0].y};
-        abs_pos[1] = {1345 + next_pieces_array[1]->offset()[1].x + 305 + next_pieces_array[1] -> offset()[1].y};
-        abs_pos[2] = {1345 + next_pieces_array[2]->offset()[1].x + 405 + next_pieces_array[2] -> offset()[1].y};
-        abs_pos[3] = {403+holding_piece->offset()[1].x, 155 + holding_piece->offset()[1].y};
+        abs_pos[0] = {1345 + next_pieces_array[0]->offset()[0].x , 150 + next_pieces_array[0] -> offset()[0].y};
+        abs_pos[1] = {1345 + next_pieces_array[1]->offset()[1].x , 305 + next_pieces_array[1] -> offset()[1].y};
+        abs_pos[2] = {1345 + next_pieces_array[2]->offset()[1].x , 405 + next_pieces_array[2] -> offset()[1].y};
         DrawTextureV(next_textures[next_pieces_array[0]->getSpriteNo()],abs_pos[0],WHITE);
         DrawTextureV(hold_textures[next_pieces_array[1]->getSpriteNo()],abs_pos[1],WHITE);
         DrawTextureV(hold_textures[next_pieces_array[2]->getSpriteNo()],abs_pos[2],WHITE);
-    if(holding_piece) DrawTextureV(hold_textures[holding_piece->getSpriteNo()],abs_pos[3], WHITE);
+    if(holding_piece) {
+        abs_pos[3] = {403+holding_piece->offset()[1].x, 155 + holding_piece->offset()[1].y};
+        DrawTextureV(hold_textures[holding_piece->getSpriteNo()],abs_pos[3], WHITE);
+    }
     // Draw Texts
     Color DarkWhite = {255,251,255,255};
     DrawTextEx(munro, to_string(info[0]).c_str(),{1500,950}, 80,0,DarkWhite);
