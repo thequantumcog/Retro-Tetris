@@ -15,7 +15,7 @@ bool Shape::would_collide(Piece& cur_orient,int inc_x=0, int inc_y=0){
         int goto_y = yShift + cur_orient[i].y + inc_y;
 
         if (goto_x < 0 || goto_x >= grid.getBounds().x || goto_y < 0 || goto_y >= grid.getBounds().y) return true;
-        if (grid[goto_y][goto_x].value() == 3) return true;
+        if (grid[goto_y][goto_x].value() == 2) return true;
     }
     return false;
 }
@@ -49,7 +49,22 @@ bool Shape::move(int inc_x, int inc_y){
     }
     return 0;
 }
+void Shape::draw_shadow(){
+    for(int i=0;i<TETROMINO_MAX_BLOCKS;i++){
+        if(grid[tetris[cur_rotation][i].y + yShadow + yShift][(int)tetris[cur_rotation][i].x].value() != 2)
+            grid[tetris[cur_rotation][i].y + yShadow + yShift][(int)tetris[cur_rotation][i].x].set_cell(0);
+    }
+    while(!would_collide(tetris[cur_rotation],0,yShadow+1))
+        yShadow +=1;
 
+    while(would_collide(tetris[cur_rotation],0,yShadow))
+        yShadow -=1;
+
+    for(int i=0;i<TETROMINO_MAX_BLOCKS;i++){
+        if(grid[tetris[cur_rotation][i].y + yShadow + yShift][(int)tetris[cur_rotation][i].x].value() != 2)
+            grid[tetris[cur_rotation][i].y + yShadow + yShift][(int)tetris[cur_rotation][i].x].set(3,tetrimon_color);
+    }
+}
 void Shape::increase_speed(){
     gravitySpeed -=5;
 }
@@ -84,7 +99,7 @@ void Shape::hard_drop(){
 void Shape::solidify(){
     for(int i=0;i<TETROMINO_MAX_BLOCKS;i++){
         int abs_y = yShift + tetris[cur_rotation][i].y, abs_x = xShift+tetris[cur_rotation][i].x;
-        grid[abs_y][abs_x].set(3,tetrimon_color+1); // +1 basically means to add borders
+        grid[abs_y][abs_x].set(2,tetrimon_color+1); // +1 basically means to add borders
     }
     dropped=0;
 }

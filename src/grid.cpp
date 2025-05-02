@@ -65,7 +65,8 @@ void Grid::draw(Texture2D * block_textures){
             if(actual_grid[i][j].value() == 1){
                 DrawTextureV(block_textures[actual_grid[i][j].getColor()],pos, WHITE);
             }
-            else if(actual_grid[i][j].value() == 3)  DrawTextureV(block_textures[actual_grid[i][j].getColor()], pos,WHITE);
+            else if(actual_grid[i][j].value() == 2)  DrawTextureV(block_textures[actual_grid[i][j].getColor()], pos,WHITE);
+            else if(actual_grid[i][j].value() == 3)  DrawTextureV(block_textures[actual_grid[i][j].getColor()], pos,PINK);
         }
         // TODO: SHouldnt belong here
         if(is_line_full(i)){

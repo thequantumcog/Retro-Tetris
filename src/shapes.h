@@ -27,6 +27,7 @@ protected:
     int tetrimon_color;
     int preview_index;
     int xShift=0,yShift=0;
+    int yShadow=0;
     int gravityCounter=0;
     int gravitySpeed=30;
     bool dropped=0;
@@ -38,6 +39,7 @@ public:
     void rotate();
     bool move(int x, int y);
     void draw();
+    void draw_shadow();
     void erase_current();
     void move_down();
     void solidify();
