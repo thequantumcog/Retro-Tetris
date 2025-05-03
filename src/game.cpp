@@ -6,10 +6,10 @@ Game::Game(): grid(info){
     InitWindow(screenWidth, screenHeight, "Schrodinger's Tetris");
     SetTargetFPS(60);
     load_textures();
-    munro = LoadFont("assets/pixelated.ttf");
     info[0] = 0;
     info[1] = 0;
     info[2] = 1;
+    my_font = LoadFont("assets/pixelated.ttf");
 }
 void Game::run_game(){
     holding_piece = nullptr;
@@ -23,6 +23,7 @@ void Game::run_game(){
             drop_next_piece();
         }
         current_piece->move_down();
+    current_piece->draw_shadow();
         handle_inputs();
         draw();
     }
@@ -39,8 +40,9 @@ void Game::handle_inputs(){
         current_piece->rotate();
     else if(IsKeyPressed(KEY_SPACE))
         current_piece->hard_drop();
-    else if(IsKeyPressed(KEY_Z))
+    else if(IsKeyPressed(KEY_Z)){
             hold_piece();
+    }
 }
 
 Shape * Game::create_a_random_piece(){
@@ -102,17 +104,17 @@ void Game::draw_info(){
         DrawTextureV(hold_textures[holding_piece->getSpriteNo()],abs_pos[3], WHITE);
     }
     // Draw Texts
-    Color DarkWhite = {255,251,255,255};
-    DrawTextEx(munro, to_string(info[0]).c_str(),{1500,950}, 80,0,DarkWhite);
-    DrawTextEx(munro, to_string(info[2]).c_str(),{1500,750}, 80,0,DarkWhite);
-    DrawTextEx(munro, to_string(info[1]).c_str(),{1500,550}, 80,0,DarkWhite);
+    Color DarkWhite = {219,219,219,255};
+    DrawTextEx(my_font, to_string(info[1]).c_str(),{1480,610}, 70,0,DarkWhite);
+    DrawTextEx(my_font, to_string(info[2]).c_str(),{1480,760}, 70,0,DarkWhite);
+    DrawTextEx(my_font, to_string(info[0]).c_str(),{1480,910}, 70,0,DarkWhite);
 }
 void Game::draw(){
+    current_piece->draw();
     BeginDrawing();
     ClearBackground(WHITE);
     DrawTexture(background, 0, 0, WHITE);
-    current_piece->draw_on_grid();
-    grid.draw(block_textures);
+    grid.draw(block_textures,shadow_textures);
     draw_info();
     EndDrawing();
 }
@@ -120,6 +122,6 @@ Game::~Game(){
     for(int i=0;i<NEXT_PIECES_COUNT;i++) if(next_pieces_array[i]) delete next_pieces_array[i];
     if (current_piece) delete current_piece;
     unload_textures();
-    UnloadFont(munro);
+    UnloadFont(my_font);
     CloseWindow();
 }
