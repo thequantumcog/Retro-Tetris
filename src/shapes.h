@@ -26,6 +26,7 @@ protected:
     int tetrimon_color;
     int preview_index;
     int xShift=0,yShift=0;
+    int yShadow=0;
     int gravityCounter=0;
     static int gravitySpeed;
     bool dropped=0;
@@ -35,7 +36,9 @@ public:
     Shape(Grid & g);
     void rotate();
     bool move(int x, int y);
-    void draw_on_grid();
+    // void draw_on_grid();
+    void draw();
+    void draw_shadow();
     void erase_current();
     void move_down();
     void solidify();

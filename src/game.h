@@ -18,8 +18,9 @@ private:
     Texture2D block_textures[SPRTIE_COUNT]; 
     Texture2D hold_textures[7]; 
     Texture2D next_textures[7]; 
+    Texture2D shadow_textures[7]; 
     Texture2D background;
-    Font munro;
+    Font my_font;
 public:
     Game();
     void run_game();

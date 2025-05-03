@@ -32,6 +32,14 @@ void Game::load_textures(){
     hold_textures[4] = LoadTexture("assets/hold/s_hold.png");
     hold_textures[5] = LoadTexture("assets/hold/t_hold.png");
     hold_textures[6] = LoadTexture("assets/hold/z_hold.png");
+
+    shadow_textures[0] = LoadTexture("assets/shadow/i.png");
+    shadow_textures[1] = LoadTexture("assets/shadow/j.png");
+    shadow_textures[2] = LoadTexture("assets/shadow/l.png");
+    shadow_textures[3] = LoadTexture("assets/shadow/o.png");
+    shadow_textures[4] = LoadTexture("assets/shadow/s.png");
+    shadow_textures[5] = LoadTexture("assets/shadow/t.png");
+    shadow_textures[6] = LoadTexture("assets/shadow/z.png");
 }
 void Game::unload_textures(){
     for(int i=0;i<14;i++){
@@ -40,6 +48,7 @@ void Game::unload_textures(){
     for(int i=0;i<7;i++){
         UnloadTexture(next_textures[i]);
         UnloadTexture(hold_textures[i]);
+        UnloadTexture(shadow_textures[i]);
     }
     UnloadTexture(background);
 }

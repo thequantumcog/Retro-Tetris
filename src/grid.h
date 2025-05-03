@@ -46,7 +46,7 @@ public:
 
     ~Grid();
 
-    void draw(Texture2D * block_textures);
+    void draw(Texture2D * block_textures, Texture2D * shadow_textures);
 };
 
 #endif
