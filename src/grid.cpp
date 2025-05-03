@@ -1,6 +1,5 @@
 #include "raylib.h"
 #include "grid.h"
-#include <iostream>
 using namespace std;
 
 Grid::Grid(int * info) : game_score(info[0]), lines_completed(info[1]), level(info[2]) {

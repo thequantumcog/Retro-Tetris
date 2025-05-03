@@ -1,6 +1,5 @@
 #include "shapes.h"
 #include <raylib.h>
-#include <iostream>
 using namespace std;
 
 void Shape::erase_current(){
@@ -62,13 +61,9 @@ void Shape::draw_shadow(){
         if(grid[tetris[cur_rotation][i].y + yShadow + yShift][(int)tetris[cur_rotation][i].x].value() != 2)
             grid[tetris[cur_rotation][i].y + yShadow + yShift][(int)tetris[cur_rotation][i].x].set_cell(0);
     }
-    //yShadow=0;
-    // while(!would_collide(tetris[cur_rotation],0,yShadow) && yShadow > 0)
-    //     yShadow -=1;
+    yShadow=0;
     while(!would_collide(tetris[cur_rotation],0,yShadow+1))
         yShadow +=1;
-    while(would_collide(tetris[cur_rotation],0,yShadow) && yShadow > 0)
-        yShadow -=1;
     for(int i=0;i<TETROMINO_MAX_BLOCKS;i++){
         if(grid[tetris[cur_rotation][i].y + yShadow + yShift][(int)tetris[cur_rotation][i].x+xShift].value() != 2)
             grid[tetris[cur_rotation][i].y + yShadow + yShift][(int)tetris[cur_rotation][i].x+xShift].set(3,tetrimon_color);
