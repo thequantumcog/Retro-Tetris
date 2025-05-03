@@ -6,7 +6,7 @@ Game::Game(): grid(info){
     InitWindow(screenWidth, screenHeight, "Schrodinger's Tetris");
     SetTargetFPS(60);
     load_textures();
-    munro = LoadFont("assets/pixelated.ttf");
+    my_font = LoadFont("assets/pixelated.ttf");
 }
 void Game::run_game(){
     holding_piece = nullptr;
@@ -96,10 +96,10 @@ void Game::draw_info(){
         DrawTextureV(hold_textures[holding_piece->getSpriteNo()],abs_pos[3], WHITE);
     }
     // Draw Texts
-    Color DarkWhite = {255,251,255,255};
-    DrawTextEx(munro, to_string(info[0]).c_str(),{1500,950}, 80,0,DarkWhite);
-    DrawTextEx(munro, to_string(info[2]).c_str(),{1500,750}, 80,0,DarkWhite);
-    DrawTextEx(munro, to_string(info[1]).c_str(),{1500,550}, 80,0,DarkWhite);
+    Color DarkWhite = {219,219,219,255};
+    DrawTextEx(my_font, to_string(info[1]).c_str(),{1480,610}, 70,0,DarkWhite);
+    DrawTextEx(my_font, to_string(info[2]).c_str(),{1480,760}, 70,0,DarkWhite);
+    DrawTextEx(my_font, to_string(info[0]).c_str(),{1480,910}, 70,0,DarkWhite);
 }
 void Game::draw(){
     BeginDrawing();
@@ -107,7 +107,7 @@ void Game::draw(){
         DrawTexture(background, 0, 0, WHITE);
         current_piece->draw_shadow();
         current_piece->draw();
-    grid.draw(block_textures);
+    grid.draw(block_textures,shadow_textures);
     draw_info();
     EndDrawing();
 }
@@ -115,6 +115,6 @@ Game::~Game(){
     for(int i=0;i<NEXT_PIECES_COUNT;i++) if(next_pieces_array[i]) delete next_pieces_array[i];
     if (current_piece) delete current_piece;
     unload_textures();
-    UnloadFont(munro);
+    UnloadFont(my_font);
     CloseWindow();
 }

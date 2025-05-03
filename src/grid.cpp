@@ -58,7 +58,7 @@ Grid::~Grid(){
     delete[] actual_grid;
 }
 
-void Grid::draw(Texture2D * block_textures){
+void Grid::draw(Texture2D * block_textures, Texture2D * shadow_textures){
     for(int i = 0; i < rows; i++){
         for(int j = 0; j < cols; j++){
             Vector2 pos = {float(605 + j*BlockSize),float(22 + i*BlockSize)};
@@ -66,7 +66,7 @@ void Grid::draw(Texture2D * block_textures){
                 DrawTextureV(block_textures[actual_grid[i][j].getColor()],pos, WHITE);
             }
             else if(actual_grid[i][j].value() == 2)  DrawTextureV(block_textures[actual_grid[i][j].getColor()], pos,WHITE);
-            else if(actual_grid[i][j].value() == 3)  DrawTextureV(block_textures[actual_grid[i][j].getColor()], pos,PINK);
+            else if(actual_grid[i][j].value() == 3)  DrawTextureV(shadow_textures[actual_grid[i][j].getColor()/2], pos,WHITE);
         }
         // TODO: SHouldnt belong here
         if(is_line_full(i)){
