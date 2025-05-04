@@ -3,7 +3,6 @@
     "arguments": [
       "/usr/bin/g++",
       "-Wall",
-      "-O2",
       "-c",
       "-o",
       "obj/game.o",
@@ -17,7 +16,6 @@
     "arguments": [
       "/usr/bin/g++",
       "-Wall",
-      "-O2",
       "-c",
       "-o",
       "obj/grid.o",
@@ -31,7 +29,6 @@
     "arguments": [
       "/usr/bin/g++",
       "-Wall",
-      "-O2",
       "-c",
       "-o",
       "obj/main.o",
@@ -45,7 +42,32 @@
     "arguments": [
       "/usr/bin/g++",
       "-Wall",
-      "-O2",
+      "-c",
+      "-o",
+      "obj/menu.o",
+      "src/menu.cpp"
+    ],
+    "directory": "/home/ar0177417/Downloads/UNI/OOP/project",
+    "file": "/home/ar0177417/Downloads/UNI/OOP/project/src/menu.cpp",
+    "output": "/home/ar0177417/Downloads/UNI/OOP/project/obj/menu.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-Wall",
+      "-c",
+      "-o",
+      "obj/resources.o",
+      "src/resources.cpp"
+    ],
+    "directory": "/home/ar0177417/Downloads/UNI/OOP/project",
+    "file": "/home/ar0177417/Downloads/UNI/OOP/project/src/resources.cpp",
+    "output": "/home/ar0177417/Downloads/UNI/OOP/project/obj/resources.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-Wall",
       "-c",
       "-o",
       "obj/shapes.o",
