@@ -1,6 +1,7 @@
 #include "game.h"
 #include <raylib.h>
 void Game::load_textures(){
+    my_font = LoadFont("assets/pixelated.ttf");
     background= LoadTexture("assets/background.png");
     block_textures[0] = LoadTexture("assets/i_block.png");
     block_textures[1] = LoadTexture("assets/i_block_solid.png");
@@ -40,6 +41,9 @@ void Game::load_textures(){
     shadow_textures[4] = LoadTexture("assets/shadow/s.png");
     shadow_textures[5] = LoadTexture("assets/shadow/t.png");
     shadow_textures[6] = LoadTexture("assets/shadow/z.png");
+
+    menu[0] = LoadTexture("assets/menu.png"); 
+    menu[1] = LoadTexture("assets/selector.png"); 
 }
 void Game::unload_textures(){
     for(int i=0;i<14;i++){
@@ -50,5 +54,10 @@ void Game::unload_textures(){
         UnloadTexture(hold_textures[i]);
         UnloadTexture(shadow_textures[i]);
     }
+    for(int i=0;i<2;i++){
+        UnloadTexture(menu[i]);
+    }
     UnloadTexture(background);
+    UnloadFont(my_font);
+
 }

@@ -6,30 +6,37 @@ Game::Game(): grid(info){
     InitWindow(screenWidth, screenHeight, "Schrodinger's Tetris");
     SetTargetFPS(60);
     load_textures();
-    info[0] = 0;
-    info[1] = 0;
-    info[2] = 1;
-    my_font = LoadFont("assets/pixelated.ttf");
-}
-void Game::run_game(){
+    // info[0] = 0,info[1] = 0,info[2] = 1;
+    startGame=0;
+    //PRELOAD SOME STUFF
     holding_piece = nullptr;
     current_piece = create_a_random_piece();
     for(int i=0;i<NEXT_PIECES_COUNT;i++) next_pieces_array[i] = create_a_random_piece();
-    while (!WindowShouldClose()) {
-        bool level_changed = grid.level_updates();
-        if(level_changed)
+}
+void Game::game_loop(){
+    while (!WindowShouldClose() && !Exit) {
+        if(!startGame) game_menu();
+        else run_game();
+    }
+}
+void Game::run_game(){
+    // static bool first_run=1;
+    // if(first_run){
+    //     first_run=0;
+    // }
+    // UPPDAES
+        if(grid.level_updates())
             current_piece->increase_speed();
         if(!current_piece->is_being_dropped()){
             drop_next_piece();
         }
         current_piece->move_down();
-    current_piece->draw_shadow();
-        handle_inputs();
+        current_piece->draw_shadow();
+        game_inputs();
         draw();
-    }
 }
 
-void Game::handle_inputs(){
+void Game::game_inputs(){
     if( IsKeyPressed(KEY_DOWN) ||IsKeyPressedRepeat(KEY_DOWN) || IsKeyPressed(KEY_J))
         current_piece->move(0,1);
     else if( IsKeyPressed(KEY_RIGHT) || IsKeyPressedRepeat(KEY_RIGHT) || IsKeyPressed(KEY_L))
@@ -122,6 +129,5 @@ Game::~Game(){
     for(int i=0;i<NEXT_PIECES_COUNT;i++) if(next_pieces_array[i]) delete next_pieces_array[i];
     if (current_piece) delete current_piece;
     unload_textures();
-    UnloadFont(my_font);
     CloseWindow();
 }
