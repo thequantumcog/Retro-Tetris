@@ -42,8 +42,6 @@ void Game::load_textures(){
     shadow_textures[5] = LoadTexture("assets/shadow/t.png");
     shadow_textures[6] = LoadTexture("assets/shadow/z.png");
 
-    menu[0] = LoadTexture("assets/menu.png"); 
-    menu[1] = LoadTexture("assets/selector.png"); 
 }
 void Game::unload_textures(){
     for(int i=0;i<14;i++){
@@ -53,9 +51,6 @@ void Game::unload_textures(){
         UnloadTexture(next_textures[i]);
         UnloadTexture(hold_textures[i]);
         UnloadTexture(shadow_textures[i]);
-    }
-    for(int i=0;i<2;i++){
-        UnloadTexture(menu[i]);
     }
     UnloadTexture(background);
     UnloadFont(my_font);

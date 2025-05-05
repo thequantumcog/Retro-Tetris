@@ -1,4 +1,5 @@
 #include "game.h"
+#include "menu.h"
 #include "shapes.h"
 #include <raylib.h>
 
@@ -6,32 +7,25 @@ Game::Game(): grid(info){
     InitWindow(screenWidth, screenHeight, "Schrodinger's Tetris");
     SetTargetFPS(60);
     load_textures();
-    // info[0] = 0,info[1] = 0,info[2] = 1;
-    startGame=0;
-    //PRELOAD SOME STUFF
+    main_menu = new MENU();
+}
+void Game::game_loop(){
     holding_piece = nullptr;
     current_piece = create_a_random_piece();
     for(int i=0;i<NEXT_PIECES_COUNT;i++) next_pieces_array[i] = create_a_random_piece();
-}
-void Game::game_loop(){
-    while (!WindowShouldClose() && !Exit) {
-        if(!startGame) game_menu();
-        else run_game();
+
+    while (!WindowShouldClose() && !main_menu->exit_clicked()) {
+        if(main_menu->is_open()) main_menu->display_menu();
+        if(main_menu->start_clicked())   run_game();
     }
 }
 void Game::run_game(){
-    // static bool first_run=1;
-    // if(first_run){
-    //     first_run=0;
-    // }
-    // UPPDAES
         if(grid.level_updates())
             current_piece->increase_speed();
         if(!current_piece->is_being_dropped()){
             drop_next_piece();
         }
         current_piece->move_down();
-        current_piece->draw_shadow();
         game_inputs();
         draw();
 }
@@ -43,7 +37,7 @@ void Game::game_inputs(){
         current_piece->move(1,0);
     else if( IsKeyPressed(KEY_LEFT) || IsKeyPressedRepeat(KEY_LEFT)  || IsKeyPressed(KEY_H))
         current_piece->move(-1,0);
-    else if(IsKeyPressed(KEY_UP) || IsKeyPressedRepeat(KEY_UP)  || IsKeyPressed(KEY_K))
+    else if(IsKeyPressed(KEY_UP) || IsKeyPressed(KEY_K))
         current_piece->rotate();
     else if(IsKeyPressed(KEY_SPACE))
         current_piece->hard_drop();
@@ -72,6 +66,7 @@ Shape * Game::create_a_random_piece(){
             break;
     }
     return new_piece;
+    // return new Tetrimon_I(grid);
 }
 void Game::drop_next_piece(){
             if(current_piece) delete current_piece;
@@ -129,5 +124,6 @@ Game::~Game(){
     for(int i=0;i<NEXT_PIECES_COUNT;i++) if(next_pieces_array[i]) delete next_pieces_array[i];
     if (current_piece) delete current_piece;
     unload_textures();
+    delete main_menu;
     CloseWindow();
 }

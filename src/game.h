@@ -2,6 +2,7 @@
 #define GAME_H
 #include "grid.h"
 #include "shapes.h"
+#include "menu.h"
 #include <raylib.h>
 class Game{
 private:
@@ -21,11 +22,7 @@ private:
     Texture2D shadow_textures[7]; 
     Texture2D background;
     Font my_font;
-    bool startGame;
-    //MENU
-    Texture2D menu[2];
-    bool menu_selection=0;
-    bool Exit =0;
+    MENU *main_menu;
 public:
     Game();
     void run_game();
@@ -40,9 +37,6 @@ public:
     void hold_piece();
     void update_next_pieces();
     ~Game();
-    // Menu Stuff
-    void game_menu();
-    void menu_inputs();
 
 };
 #endif
