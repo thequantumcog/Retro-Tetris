@@ -13,13 +13,30 @@ Grid::Grid(int * info) : game_score(info[0]), lines_completed(info[1]), level(in
     level_threshold=10;
 
 }
+void Grid::Reset(){
+    for(int i=0;i<rows;i++){
+        for(int j=0;j<cols;j++){
+            actual_grid[i][j].set_cell(0);
+        }
+    }
+}
 int  Grid::getBlockSize(){
     return BlockSize;
 }
-// Cell& Grid::getGridBlock(int x, int y){
-//     return actual_grid[x][y];
-//
-// }
+bool Grid::is_game_over(){
+    static bool game_over = 0;
+    for (int i = 0; i < 3; i++) {
+        for (int j = 1; j < cols-1; j++) {
+            if (actual_grid[i][j].value() == 3){
+                game_over=1;
+                break;
+            }
+        }
+        if(game_over)
+            break;
+    }
+    return game_over;
+}
 Cell * Grid::operator[](int x){
     return actual_grid[x];
 }
