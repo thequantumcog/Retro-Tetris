@@ -6,8 +6,9 @@
 Game::Game(): grid(info){
     InitWindow(screenWidth, screenHeight, "Schrodinger's Tetris");
     SetTargetFPS(60);
-    load_textures();
+    res = new ResourceManager();
     main_menu = new MENU();
+
 }
 void Game::game_loop(){
     holding_piece = nullptr;
@@ -98,32 +99,32 @@ void Game::draw_info(){
         abs_pos[0] = {1345 + next_pieces_array[0]->offset()[0].x , 150 + next_pieces_array[0] -> offset()[0].y};
         abs_pos[1] = {1345 + next_pieces_array[1]->offset()[1].x , 305 + next_pieces_array[1] -> offset()[1].y};
         abs_pos[2] = {1345 + next_pieces_array[2]->offset()[1].x , 405 + next_pieces_array[2] -> offset()[1].y};
-        DrawTextureV(next_textures[next_pieces_array[0]->getSpriteNo()],abs_pos[0],WHITE);
-        DrawTextureV(hold_textures[next_pieces_array[1]->getSpriteNo()],abs_pos[1],WHITE);
-        DrawTextureV(hold_textures[next_pieces_array[2]->getSpriteNo()],abs_pos[2],WHITE);
+        DrawTextureV(res->Next()[next_pieces_array[0]->getSpriteNo()],abs_pos[0],WHITE);
+        DrawTextureV(res->Hold()[next_pieces_array[1]->getSpriteNo()],abs_pos[1],WHITE);
+        DrawTextureV(res->Hold()[next_pieces_array[2]->getSpriteNo()],abs_pos[2],WHITE);
     if(holding_piece) {
         abs_pos[3] = {403+holding_piece->offset()[1].x, 155 + holding_piece->offset()[1].y};
-        DrawTextureV(hold_textures[holding_piece->getSpriteNo()],abs_pos[3], WHITE);
+        DrawTextureV(res->Hold()[holding_piece->getSpriteNo()],abs_pos[3], WHITE);
     }
     // Draw Texts
     Color DarkWhite = {219,219,219,255};
-    DrawTextEx(my_font, to_string(info[1]).c_str(),{1480,610}, 70,0,DarkWhite);
-    DrawTextEx(my_font, to_string(info[2]).c_str(),{1480,760}, 70,0,DarkWhite);
-    DrawTextEx(my_font, to_string(info[0]).c_str(),{1480,910}, 70,0,DarkWhite);
+    DrawTextEx(res->font(), to_string(info[1]).c_str(),{1480,610}, 70,0,DarkWhite);
+    DrawTextEx(res->font(), to_string(info[2]).c_str(),{1480,760}, 70,0,DarkWhite);
+    DrawTextEx(res->font(), to_string(info[0]).c_str(),{1480,910}, 70,0,DarkWhite);
 }
 void Game::draw(){
     current_piece->draw();
     BeginDrawing();
     ClearBackground(WHITE);
-    DrawTexture(background, 0, 0, WHITE);
-    grid.draw(block_textures,shadow_textures);
+    DrawTexture(res->Background(), 0, 0, WHITE);
+    grid.draw(res->Blocks(),res->Shadow());
     draw_info();
     EndDrawing();
 }
 Game::~Game(){
     for(int i=0;i<NEXT_PIECES_COUNT;i++) if(next_pieces_array[i]) delete next_pieces_array[i];
     if (current_piece) delete current_piece;
-    unload_textures();
+    delete res;
     delete main_menu;
     CloseWindow();
 }
