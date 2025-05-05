@@ -30,12 +30,13 @@ protected:
     Grid& grid;
     int tetrimon_color;
     //int preview_index;
-    int xShift=0,yShift=0;
+    int xShift=5,yShift=0;
     int yShadow=0;
     int gravityCounter=0;
     static int gravitySpeed;
     bool dropped=0;
     Vector2 correction_values[2];
+    static bool not_placeable;
 
 public:
     Shape(Grid & g);
@@ -43,7 +44,7 @@ public:
     virtual Piece getNextOrient()=0;
     virtual ~Shape(){};
     bool move(int x, int y);
-    void draw();
+    void place();
     // void draw_shadow();
     void erase_current();
     void move_down();
@@ -54,6 +55,8 @@ public:
     void increase_speed();
     // getters
     bool is_being_dropped();
+    bool notPlaceable();
+    void reset_gameOver();
     Vector2 * offset();
     Vector2 pos();
     int getSpriteNo();

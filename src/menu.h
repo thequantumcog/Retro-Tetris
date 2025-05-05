@@ -16,6 +16,7 @@ public:
     ~MENU();
     bool start_clicked();
     bool is_open();
+    void set_open();
     bool exit_clicked();
     void display_menu();
 

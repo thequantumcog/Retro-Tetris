@@ -1,7 +1,7 @@
 #ifndef GAME_H
 #define GAME_H
 #include "grid.h"
-#include "shapes.h"
+#include "tetrimons.h"
 #include "menu.h"
 #include "resources.h"
 #include <raylib.h>
@@ -9,7 +9,6 @@ class Game{
 private:
     const int screenWidth = 1920;
     const int screenHeight = 1080;
-    const int BlockSize = 48;
     static const int NEXT_PIECES_COUNT = 3;
     int info[3] = {};
     Grid grid;
@@ -18,17 +17,22 @@ private:
     Shape * next_pieces_array[NEXT_PIECES_COUNT];
     MENU *main_menu;
     ResourceManager * res;
-public:
-    Game();
-    void run_game();
+    bool gameOver=0;
+
     void game_inputs();
+    void handle_inputs();
     void draw();
     void draw_info();
-    void game_loop();
+    void run_game();
     Shape * create_a_random_piece();
     void drop_next_piece();
     void hold_piece();
     void update_next_pieces();
+    void reset_after_gameOver();
+    void do_if_gameOver();
+public:
+    Game();
+    void game_loop();
     ~Game();
 
 };

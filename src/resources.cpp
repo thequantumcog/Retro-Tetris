@@ -41,6 +41,7 @@ ResourceManager::ResourceManager(){
     shadow_textures[4] = LoadTexture("assets/shadow/s.png");
     shadow_textures[5] = LoadTexture("assets/shadow/t.png");
     shadow_textures[6] = LoadTexture("assets/shadow/z.png");
+    game_over = LoadTexture("assets/game_over.png");
 
 }
 ResourceManager::~ResourceManager(){
@@ -54,6 +55,7 @@ ResourceManager::~ResourceManager(){
     }
     UnloadTexture(background);
     UnloadFont(my_font);
+    UnloadTexture(game_over);
 
 }
 Texture2D * ResourceManager::Blocks(){
@@ -71,6 +73,9 @@ Texture2D * ResourceManager::Hold(){
 }
 Texture2D& ResourceManager::Background(){
     return background;
+}
+Texture2D& ResourceManager::GameOver(){
+    return game_over;
 }
 Font& ResourceManager::font(){
     return my_font;

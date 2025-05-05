@@ -36,6 +36,7 @@ class Grid {
 public:
     Grid(int * info);
     Cell ** getGrid();
+    void Reset();
     // Cell& getGridBlock(int x, int y);
     int  getBlockSize();
     Cell * operator[](int x);
@@ -43,6 +44,7 @@ public:
     void delete_line(int i);
     Vector2 getBounds();
     bool level_updates();
+    bool is_game_over();
 
     ~Grid();
 
