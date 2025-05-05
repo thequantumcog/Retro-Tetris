@@ -1,6 +1,5 @@
 #include "game.h"
 #include "menu.h"
-#include "shapes.h"
 #include <raylib.h>
 
 Game::Game(): grid(info){
@@ -21,16 +20,46 @@ void Game::game_loop(){
     }
 }
 void Game::run_game(){
+    if(current_piece->notPlaceable()){
+        gameOver=1;
+        do_if_gameOver();
+    }
+    if(!gameOver){
         if(grid.level_updates())
             current_piece->increase_speed();
         if(!current_piece->is_being_dropped()){
             drop_next_piece();
         }
         current_piece->move_down();
-        game_inputs();
-        draw();
+    }
+    handle_inputs();
+    draw();
 }
 
+void Game::do_if_gameOver(){
+}
+void Game::reset_after_gameOver(){
+    grid.Reset();
+    current_piece->reset_gameOver();
+    for(int i=0;i<3;i++){
+        info[i] = 0;
+    }
+    gameOver=0;
+}
+void Game::handle_inputs(){
+    if(!gameOver)
+        game_inputs();
+    else if(gameOver) {
+        if(IsKeyPressed(KEY_ENTER)){
+            reset_after_gameOver();
+        }
+        else if(IsKeyPressed(KEY_M)){
+            main_menu->set_open();
+            reset_after_gameOver();
+
+        }
+    }
+}
 void Game::game_inputs(){
     if( IsKeyPressed(KEY_DOWN) ||IsKeyPressedRepeat(KEY_DOWN) || IsKeyPressed(KEY_J))
         current_piece->move(0,1);
@@ -113,12 +142,16 @@ void Game::draw_info(){
     DrawTextEx(res->font(), to_string(info[0]).c_str(),{1480,910}, 70,0,DarkWhite);
 }
 void Game::draw(){
-    current_piece->draw();
+    current_piece->place();
     BeginDrawing();
     ClearBackground(WHITE);
     DrawTexture(res->Background(), 0, 0, WHITE);
     grid.draw(res->Blocks(),res->Shadow());
     draw_info();
+    if(gameOver){
+        DrawRectangle(600, 0, 625, 1080, BLACK);
+        DrawTexture(res->GameOver(), 720, 420, WHITE);
+    }
     EndDrawing();
 }
 Game::~Game(){

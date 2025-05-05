@@ -1,8 +1,9 @@
-#include "shapes.h"
+#include "tetrimons.h"
 #include <raylib.h>
 using namespace std;
 
 int Shape::gravitySpeed = 30;
+bool Shape::not_placeable=0;
 
 void Shape::erase_current(){
     // erase block
@@ -22,17 +23,19 @@ Shape::Shape(Grid & g): grid(g){
     correction_values[1] = {0,0};
 }
 
-void Shape::draw(){
+void Shape::place(){
     if(dropped){
         yShadow=0;
         while(!would_collide(tetris,0,yShadow+1))
             yShadow +=1;
         for(int i=0;i<TETROMINO_MAX_BLOCKS;i++){
-            if(grid[(int)tetris[i].y + yShadow + yShift][(int)tetris[i].x+xShift].value() != 2)
+            if(grid[(int)tetris[i].y + yShadow + yShift][(int)tetris[i].x+xShift].value() ==0 )
                 grid[(int)tetris[i].y + yShadow + yShift][(int)tetris[i].x+xShift].set(3,tetrimon_color);
         }
 
         for(int i=0;i<TETROMINO_MAX_BLOCKS;i++){
+            if(grid[tetris[i].y + yShift][(int)tetris[i].x + xShift].value() == 2)
+                not_placeable=1;
             grid[tetris[i].y + yShift][(int)tetris[i].x + xShift].set(1,tetrimon_color);
         }
     }
@@ -117,6 +120,14 @@ int Shape::getSpriteNo(){
 }
 Vector2 * Shape::offset(){
     return correction_values;
+}
+bool Shape::notPlaceable(){
+    if(not_placeable)
+        return 1;
+    return 0;
+}
+void Shape::reset_gameOver(){
+    not_placeable=0;
 }
 Tetrimon_I::Tetrimon_I(Grid & g): Shape(g){
     tetrimon_color = 0;

@@ -42,6 +42,10 @@ bool MENU::is_open(){
         return 1;
     return 0;
 }
+void MENU::set_open(){
+    menu_open=1;
+    startGame=0;
+}
 bool MENU::exit_clicked(){
     if(Exit)
         return 1;
