@@ -1,6 +1,6 @@
-#include "game.h"
+#include "resources.h"
 #include <raylib.h>
-void Game::load_textures(){
+ResourceManager::ResourceManager(){
     my_font = LoadFont("assets/pixelated.ttf");
     background= LoadTexture("assets/background.png");
     block_textures[0] = LoadTexture("assets/i_block.png");
@@ -42,10 +42,8 @@ void Game::load_textures(){
     shadow_textures[5] = LoadTexture("assets/shadow/t.png");
     shadow_textures[6] = LoadTexture("assets/shadow/z.png");
 
-    menu[0] = LoadTexture("assets/menu.png"); 
-    menu[1] = LoadTexture("assets/selector.png"); 
 }
-void Game::unload_textures(){
+ResourceManager::~ResourceManager(){
     for(int i=0;i<14;i++){
         UnloadTexture(block_textures[i]);
     }
@@ -54,10 +52,26 @@ void Game::unload_textures(){
         UnloadTexture(hold_textures[i]);
         UnloadTexture(shadow_textures[i]);
     }
-    for(int i=0;i<2;i++){
-        UnloadTexture(menu[i]);
-    }
     UnloadTexture(background);
     UnloadFont(my_font);
 
+}
+Texture2D * ResourceManager::Blocks(){
+    return block_textures;
+}
+
+Texture2D* ResourceManager::Shadow(){
+    return shadow_textures;
+}
+Texture2D * ResourceManager::Next(){
+    return next_textures;
+}
+Texture2D * ResourceManager::Hold(){
+    return hold_textures;
+}
+Texture2D& ResourceManager::Background(){
+    return background;
+}
+Font& ResourceManager::font(){
+    return my_font;
 }
