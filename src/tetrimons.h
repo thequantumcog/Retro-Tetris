@@ -29,11 +29,9 @@ protected:
     Piece tetris;
     Grid& grid;
     int tetrimon_color;
-    //int preview_index;
     int xShift=5,yShift=0;
     int yShadow=0;
-    int gravityCounter=0;
-    static int gravitySpeed;
+    static double gravitySpeed;
     bool dropped=0;
     Vector2 correction_values[2];
     static bool not_placeable;
@@ -52,7 +50,8 @@ public:
     bool would_collide(Piece& cur_orient,int dx,int dy);
     void drop_piece(bool drop);
     void hard_drop();
-    void increase_speed();
+    // void increase_speed(double speed=5);
+    void set_speed(int level=1);
     // getters
     bool is_being_dropped();
     bool notPlaceable();

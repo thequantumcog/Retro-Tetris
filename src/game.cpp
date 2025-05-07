@@ -7,6 +7,7 @@ Game::Game(): grid(info){
     SetTargetFPS(60);
     res = new ResourceManager();
     main_menu = new MENU();
+    info[2] = 1;
 
 }
 void Game::game_loop(){
@@ -20,13 +21,17 @@ void Game::game_loop(){
     }
 }
 void Game::run_game(){
+    int& level = info[2];
     if(current_piece->notPlaceable()){
         gameOver=1;
-        do_if_gameOver();
     }
     if(!gameOver){
         if(grid.level_updates())
-            current_piece->increase_speed();
+            current_piece->set_speed(level);
+        if(info[2] > 8){
+            info[2] = 1;
+            current_piece->set_speed(level);
+        } 
         if(!current_piece->is_being_dropped()){
             drop_next_piece();
         }
@@ -36,8 +41,8 @@ void Game::run_game(){
     draw();
 }
 
-void Game::do_if_gameOver(){
-}
+// void Game::do_if_gameOver(){
+// }
 void Game::reset_after_gameOver(){
     grid.Reset();
     current_piece->reset_gameOver();
