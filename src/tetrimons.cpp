@@ -1,8 +1,9 @@
 #include "tetrimons.h"
+#include <math.h>
 #include <raylib.h>
 using namespace std;
 
-int Shape::gravitySpeed = 30;
+double Shape::gravitySpeed = 1.2;
 bool Shape::not_placeable=0;
 
 void Shape::erase_current(){
@@ -73,23 +74,22 @@ void Shape::rotate(){
     erase_current();
     tetris = temp;
 }
-// void Shape::draw_shadow(){
-//     // for(int i=0;i<TETROMINO_MAX_BLOCKS;i++){
-//     //     if(grid[(int)tetris[i].y + yShadow + yShift][(int)tetris[i].x].value() == 3 )
-//     //         grid[(int)tetris[i].y + yShadow + yShift][(int)tetris[i].x + xShift].set_cell(0);
-//     // }
+// void Shape::increase_speed(double speed){
+//     gravitySpeed += speed;
 // }
-void Shape::increase_speed(){
-    gravitySpeed -=5;
+void Shape::set_speed(int level){
+    gravitySpeed = pow(gravitySpeed + 0.1,level-1);
+    //gravitySpeed = 1 / gravitySpeed;
+    cout << gravitySpeed << endl;
 }
 void Shape::move_down(){
     if(dropped){
-        gravityCounter++;
-        if(gravityCounter > gravitySpeed){
+        static double gravityCounter = GetTime();
+        if(GetTime() - gravityCounter  >= 1/gravitySpeed){
             erase_current();
             if(!would_collide(tetris,0, 1)) yShift++,yShadow--;
             else solidify();
-            gravityCounter=0;
+            gravityCounter=GetTime();
         }
     }
 }
@@ -131,9 +131,9 @@ void Shape::reset_gameOver(){
 }
 Tetrimon_I::Tetrimon_I(Grid & g): Shape(g){
     tetrimon_color = 0;
-//    preview_index=0;
     correction_values[0]={-30,20};
     correction_values[1] = {-15,23};
+
     rotation[0] = (Vector2[]){{1, 0}, {1, 1}, {1, 2},{1, 3}};
     rotation[1] = (Vector2[]){{0, 2}, {1, 2}, {2, 2},{3, 2}};
     rotation[2] = (Vector2[]){{2, 0}, {2, 1}, {2, 2},{2, 3}};
@@ -142,7 +142,6 @@ Tetrimon_I::Tetrimon_I(Grid & g): Shape(g){
 }
 Tetrimon_J::Tetrimon_J(Grid & g): Shape(g){
     tetrimon_color = 2;
-  //  preview_index=1;
 
     rotation[0] = (Vector2[]){{0, 2}, {1, 0}, {1, 1}, {1, 2}};
     rotation[1] = (Vector2[]){{0, 1}, {1, 1}, {2, 1}, {2, 2}};
@@ -153,7 +152,6 @@ Tetrimon_J::Tetrimon_J(Grid & g): Shape(g){
 } 
 Tetrimon_L::Tetrimon_L(Grid & g): Shape(g){
     tetrimon_color = 4;
-    //preview_index=2;
 
     rotation[0] = (Vector2[]){{0, 0}, {1, 0}, {1, 1},{1, 2}};
     rotation[1] = (Vector2[]){{0, 1}, {0, 2}, {1, 1},{2, 1}};
@@ -164,7 +162,6 @@ Tetrimon_L::Tetrimon_L(Grid & g): Shape(g){
 
 Tetrimon_O::Tetrimon_O(Grid & g): Shape(g){
     tetrimon_color = 6;
-    //preview_index=3;
     correction_values[0] = {20,10};
     correction_values[1] = {17,5};
     rotation[0] = (Vector2[]){{0, 0}, {0, 1}, {1, 0}, {1, 1}};
@@ -173,7 +170,7 @@ Tetrimon_O::Tetrimon_O(Grid & g): Shape(g){
 
 Tetrimon_S::Tetrimon_S(Grid & g): Shape(g){
     tetrimon_color = 8;
-    //preview_index=4;
+
     rotation[0] = (Vector2[]){{0, 0}, {0, 1}, {1, 1}, {1, 2}};
     rotation[1] = (Vector2[]){{0, 2}, {1, 1}, {1, 2}, {2, 1}};
     rotation[2] = (Vector2[]){{1, 0}, {1, 1}, {2, 1}, {2, 2}};
@@ -182,7 +179,7 @@ Tetrimon_S::Tetrimon_S(Grid & g): Shape(g){
 } 
 Tetrimon_T::Tetrimon_T(Grid & g): Shape(g){
     tetrimon_color =  10;
-    //preview_index=5;
+
     rotation[0] = (Vector2[]){{0, 1}, {1, 0}, {1, 1}, {1, 2}};
     rotation[1] = (Vector2[]){{0, 1}, {1, 1}, {1, 2}, {2, 1}};
     rotation[2] = (Vector2[]){{1, 0}, {1, 1}, {1, 2}, {2, 1}};
@@ -192,7 +189,7 @@ Tetrimon_T::Tetrimon_T(Grid & g): Shape(g){
 
 Tetrimon_Z::Tetrimon_Z(Grid & g): Shape(g){
     tetrimon_color = 12;
-    //preview_index=6;
+
     rotation[0] = (Vector2[]){{0, 1}, {0, 2}, {1, 0}, {1, 1}};
     rotation[1] = (Vector2[]){{0, 1}, {1, 1}, {1, 2}, {2, 2}};
     rotation[2] = (Vector2[]){{1, 1}, {1, 2}, {2, 0}, {2, 1}};

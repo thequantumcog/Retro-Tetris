@@ -29,7 +29,7 @@ private:
     void hold_piece();
     void update_next_pieces();
     void reset_after_gameOver();
-    void do_if_gameOver();
+    // void do_if_gameOver();
 public:
     Game();
     void game_loop();
