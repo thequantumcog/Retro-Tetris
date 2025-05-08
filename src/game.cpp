@@ -7,6 +7,7 @@ Game::Game(): grid(info){
     SetTargetFPS(60);
     res = new ResourceManager();
     main_menu = new MENU();
+    score_menu = new Score();
     info[2] = 1;
 
 }
@@ -17,7 +18,8 @@ void Game::game_loop(){
 
     while (!WindowShouldClose() && !main_menu->exit_clicked()) {
         if(main_menu->is_open()) main_menu->display_menu();
-        if(main_menu->start_clicked())   run_game();
+        else if(main_menu->start_clicked())   run_game();
+        else if(main_menu->score_clicked())   score_menu->display();
     }
 }
 void Game::run_game(){
@@ -164,5 +166,6 @@ Game::~Game(){
     if (current_piece) delete current_piece;
     delete res;
     delete main_menu;
+    delete score_menu;
     CloseWindow();
 }
