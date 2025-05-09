@@ -1,3 +1,5 @@
+#ifndef RES_H
+#define RES_H
 #include "raylib.h"
 class ResourceManager{
     static const int SPRTIE_COUNT = 14;
@@ -19,3 +21,4 @@ public:
     Texture2D&  GameOver();
     Font&  font();
 };
+#endif

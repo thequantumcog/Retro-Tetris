@@ -3,6 +3,7 @@
 #include "grid.h"
 #include "tetrimons.h"
 #include "menu.h"
+#include "game_over.h"
 #include "resources.h"
 #include "score.h"
 #include <raylib.h>
@@ -18,8 +19,8 @@ private:
     Shape * next_pieces_array[NEXT_PIECES_COUNT];
     MENU *main_menu;
     Score *score_menu;
+    GameOverScreen *gameover_screen;
     ResourceManager * res;
-    bool gameOver=0;
 
     void game_inputs();
     void handle_inputs();
