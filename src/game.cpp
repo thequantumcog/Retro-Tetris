@@ -1,5 +1,6 @@
 #include "game.h"
 #include "menu.h"
+#include "game_over.h"
 #include <raylib.h>
 
 Game::Game(): grid(info){
@@ -7,27 +8,43 @@ Game::Game(): grid(info){
     SetTargetFPS(60);
     res = new ResourceManager();
     main_menu = new MENU();
-    score_menu = new Score();
-    info[2] = 1;
+    score_menu = new Score(main_menu->back());
+    gameover_screen = new GameOverScreen(res);
 
 }
 void Game::game_loop(){
+    info[2] = 1; // set level=1
     holding_piece = nullptr;
     current_piece = create_a_random_piece();
     for(int i=0;i<NEXT_PIECES_COUNT;i++) next_pieces_array[i] = create_a_random_piece();
 
-    while (!WindowShouldClose() && !main_menu->exit_clicked()) {
-        if(main_menu->is_open()) main_menu->display_menu();
-        else if(main_menu->start_clicked())   run_game();
-        else if(main_menu->score_clicked())   score_menu->display();
+    bool exitWindow=0;
+    while (!WindowShouldClose() && !exitWindow) {
+        switch(main_menu->get_action()){
+        case MenuAction::None:
+                main_menu->display_menu();
+            break;
+        case MenuAction::Start:
+                run_game();
+            break;
+        case MenuAction::Score:
+                score_menu->display();
+            break;
+        case MenuAction::Options:
+                score_menu->display();
+            break;
+        case MenuAction::Exit:
+                exitWindow=1;
+            break;
+        }
     }
 }
 void Game::run_game(){
     int& level = info[2];
     if(current_piece->notPlaceable()){
-        gameOver=1;
+        gameover_screen->set_GameOver(1);
     }
-    if(!gameOver){
+    if(!gameover_screen->isGameOver()){
         if(grid.level_updates())
             current_piece->set_speed(level);
         if(info[2] > 8){
@@ -43,20 +60,20 @@ void Game::run_game(){
     draw();
 }
 
-// void Game::do_if_gameOver(){
-// }
+
 void Game::reset_after_gameOver(){
     grid.Reset();
     current_piece->reset_gameOver();
     for(int i=0;i<3;i++){
         info[i] = 0;
     }
-    gameOver=0;
+    gameover_screen->set_GameOver(0);
 }
 void Game::handle_inputs(){
-    if(!gameOver)
+    if(!gameover_screen->isGameOver())
         game_inputs();
-    else if(gameOver) {
+    else if(gameover_screen->isGameOver()) {
+        gameover_screen->getInput();
         if(IsKeyPressed(KEY_ENTER)){
             reset_after_gameOver();
         }
@@ -155,9 +172,8 @@ void Game::draw(){
     DrawTexture(res->Background(), 0, 0, WHITE);
     grid.draw(res->Blocks(),res->Shadow());
     draw_info();
-    if(gameOver){
-        DrawRectangle(600, 0, 625, 1080, BLACK);
-        DrawTexture(res->GameOver(), 720, 420, WHITE);
+    if(gameover_screen->isGameOver()){
+        gameover_screen->draw();
     }
     EndDrawing();
 }
@@ -167,5 +183,6 @@ Game::~Game(){
     delete res;
     delete main_menu;
     delete score_menu;
+    delete gameover_screen;
     CloseWindow();
 }
