@@ -1,9 +1,9 @@
 #include "menu.h"
+#include "resources.h"
 #include <raylib.h>
 
 MENU::MENU(){
-    menu[0] = LoadTexture("assets/menu.png"); 
-    menu[1] = LoadTexture("assets/selector.png"); 
+    res = new MenuRes();
     menu_selection = MenuAction::Start;
 }
 void MENU::display_menu(){
@@ -14,8 +14,8 @@ void MENU::draw_menu(){
     int offset = 63*(int)menu_selection;
     BeginDrawing();
     ClearBackground(BLACK);
-    DrawTexture(menu[0], 0, 0, WHITE);
-    DrawTexture(menu[1], 790, 800+offset, WHITE);
+    DrawTexture(res->Background(), 0, 0, WHITE);
+    DrawTexture(res->Selector(), 790, 800+offset, WHITE);
     EndDrawing();
 }
 void MENU::handle_inputs(){
@@ -41,7 +41,5 @@ bool& MENU::back(){
     return menu_open;
 }
 MENU::~MENU(){
-    for(int i=0;i<2;i++){
-        UnloadTexture(menu[i]);
-    }
+    delete res;
 }

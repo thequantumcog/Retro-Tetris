@@ -1,11 +1,11 @@
 #include "score.h"
+#include "resources.h"
 #include <iostream>
 #include <fstream>
 #include <raylib.h>
-#include <stdexcept>
 
-Score::Score(ResourceManager * r,bool &Menu):  res(r),enableMenu(Menu){
-    background = LoadTexture("assets/score_menu.png");
+Score::Score(bool &Menu):enableMenu(Menu){
+    res = new ScoreRes();
     loadScores();
 
 }
@@ -74,7 +74,7 @@ void Score::handleInput(){
 void Score::display(){
     BeginDrawing();
     ClearBackground(WHITE);
-    DrawTexture(background, 0,0, WHITE);
+    DrawTexture(res->Background(), 0,0, WHITE);
     int yoffset = 120;
     for(int i=0;i<3;i++){
         DrawTextEx(res->font(), scores[i][0].c_str(), {550,(float)470+yoffset*i}, 70,5,BLACK);
@@ -88,5 +88,5 @@ void Score::di_scores(){
 }
 Score::~Score(){
     writeScores();
-    UnloadTexture(background);
+    delete res;
 }

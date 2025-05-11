@@ -7,7 +7,7 @@
 class GameOverScreen{
     const int screenWidth = 1920;
     const int screenHeight = 1080;
-    ResourceManager * res;
+    GameOverRes * res;
     std::string name = "";
     int backspaceHoldCounter = 0;
     int framesCounter = 0;
@@ -15,13 +15,18 @@ class GameOverScreen{
     Rectangle textBox ;
     bool gameOver=0;;
     bool isWhitespace(std::string);
-    btn back;
+    btn back_btn;
+    btn restart_btn;
+
 public:
-    GameOverScreen(ResourceManager * res);
+    GameOverScreen(bool& gotoMenu, bool& reset);
+    ~GameOverScreen();
     std::string getInput();
     void draw();
     bool isGameOver();
     void set_GameOver(bool);
+    void mouseinput();
+    void resetbtns();
 
     
 

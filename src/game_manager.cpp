@@ -1,14 +1,15 @@
 #include "game_manager.h"
+#include "resources.h"
 #include <raylib.h>
 GameManager::GameManager(){
     InitWindow(screenWidth, screenHeight, "Schrodinger's Tetris");
     InitAudioDevice();
     SetTargetFPS(60);
-    res = new ResourceManager();
+    res = new CommonRes();
     main_menu = new MENU();
-    options_menu = new Options(res,main_menu->back(),&startingLevel,&music);
-    score_menu = new Score(res,main_menu->back());
-    game = new Game(res,main_menu->back(),&startingLevel,score_menu);
+    options_menu = new Options(main_menu->back(),&startingLevel,&music);
+    score_menu = new Score(main_menu->back());
+    game = new Game(main_menu->back(),&startingLevel,score_menu);
     SeekMusicStream(res->sound(), 25.0f);
 
 }
