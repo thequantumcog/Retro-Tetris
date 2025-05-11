@@ -75,6 +75,7 @@ class Options{
     Texture2D level;
     Texture2D toggle;
     Texture2D selector;
+    Texture2D selection;
     void draw();
     void input();
     void logic();
