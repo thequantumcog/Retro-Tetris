@@ -4,8 +4,6 @@
 #include <raylib.h>
 using namespace std;
 
-
-
 Options::Options(ResourceManager* r, bool& Menu, int * startingLevel, bool * music): res(r), 
     back_btn(600,1000,262,255,3,&Menu),save_btn(1000,1000,262,255,3,&Save),toggle_btn(1200,650,189,95,2,music){
     this->startingLevel = startingLevel;
@@ -17,22 +15,28 @@ Options::Options(ResourceManager* r, bool& Menu, int * startingLevel, bool * mus
     level = LoadTexture("assets/options/level.png");
     toggle = LoadTexture("assets/options/toggle.png");
     selector = LoadTexture("assets/options/selector.png");
-    selection = LoadTexture("assets/options/selector.png");
+    selection = LoadTexture("assets/options/selection.png");
     list = Selected::LEVEL;
     LoadPrev();
 
 }
+void Options::reset_btns(){
+    back_btn.resetbtn();
+    save_btn.resetbtn();
+}
 void Options::di_options(){
-    logic();
     input();
+    logic();
     draw();
+    reset_btns();
+
 }
 void Options::logic(){
 static Selected prevSelected = Selected::NONE;
 
 if (prevSelected != list) {
     switch (prevSelected) {
-        case Selected::LEVEL:    break;
+        case Selected::LEVEL:   /* do nothing */ break;
         case Selected::MUSIC:  toggle_btn.togglefocus(); break;
         case Selected::BACK:   back_btn.togglefocus();   break;
         case Selected::SAVE:   save_btn.togglefocus();   break;
@@ -58,25 +62,31 @@ switch (list) {
         break;
 
     case Selected::MUSIC:
-        if (IsKeyPressed(KEY_LEFT) || IsKeyPressed(KEY_RIGHT)) {
+        if (IsKeyPressed(KEY_LEFT) || IsKeyPressed(KEY_RIGHT) || IsKeyPressed(KEY_ENTER)) {
             toggle_btn.clickbtn();
         }
         break;
 
     case Selected::BACK:
-        if (IsKeyPressed(KEY_ENTER)) {
-            back_btn.clickbtn();
-            back_btn.togglefocus();
-            list = Selected::NONE;    
-        }
-        break;
+            if(IsKeyDown(KEY_ENTER)){
+                back_btn.fakeclick();
+            }
+            else if (IsKeyReleased(KEY_ENTER)) {
+                back_btn.clickbtn();
+                back_btn.togglefocus();
+                list = Selected::NONE;    
+            }
+            break;
 
     case Selected::SAVE:
-        if (IsKeyPressed(KEY_ENTER)) {
-            save_btn.clickbtn();      
-            save_btn.togglefocus();
-            list = Selected::NONE;
-        }
+            if(IsKeyDown(KEY_ENTER)){
+                save_btn.fakeclick();
+            }
+            if (IsKeyReleased(KEY_ENTER)) {
+                save_btn.clickbtn();      
+                save_btn.togglefocus();
+                list = Selected::NONE;
+            }
         break;
 
     case Selected::NONE:
@@ -85,28 +95,39 @@ switch (list) {
 
 prevSelected = list;
 }
-void Options::input(){
+void Options::handle_keyboard(){
     if(IsKeyPressed(KEY_DOWN))
-        list = (Selected)((int)list + 1);
-    if (IsKeyPressed(KEY_BACKSPACE))
+        list = (Selected)(((int)list + 1) % 3);
+    else if(IsKeyPressed(KEY_UP))
+        list = (Selected)(((int)list - 1 + 3) % 3);
+    else if(list == Selected::BACK && IsKeyPressed(KEY_RIGHT)){
+        list = Selected::SAVE;
+    }
+    else if(list == Selected::SAVE && IsKeyPressed(KEY_LEFT)){
+        list = Selected::BACK;
+    }
+    else if (IsKeyPressed(KEY_BACKSPACE))
         back_btn.clickbtn();
+}
 
+void Options::handle_mouse(){
     if (IsMouseButtonDown(MOUSE_BUTTON_LEFT)){
         if (back_btn.isMouseHovering())
-            back_btn.clickbtn();
+            back_btn.fakeclick();
         else if (save_btn.isMouseHovering())
-            save_btn.clickbtn();
+            save_btn.fakeclick();
     }
-    else{
-        back_btn.resetbtn();
-        save_btn.resetbtn();
-    }
-    if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT)){
+    else if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT)){
         if (back_btn.isMouseHovering())
             back_btn.clickbtn();
         else if (toggle_btn.isMouseHovering())
                 toggle_btn.clickbtn();
     }
+}
+void Options::input(){
+    handle_keyboard();
+    handle_mouse();
+
     if(Save){
         Write();
         back_btn.clickbtn();
@@ -117,15 +138,21 @@ void Options::draw(){
     BeginDrawing();
     ClearBackground(RAYWHITE);
     DrawTexture(background,0,0,WHITE);
+    DrawTexture(selection, 415, 490+(list == Selected::LEVEL ? 0 : 170), WHITE);
+
     DrawTexture(selector,560 + (*startingLevel)*105, 450, WHITE);
     DrawTexture(level, 470, 450,WHITE);
+
     DrawTextureRec(back, back_btn.getBtn(), 
                    back_btn.getPos(), WHITE);
+
     DrawTextureRec(save, save_btn.getBtn(), 
                    save_btn.getPos(), WHITE);
+
     DrawTextEx(res->font(),"Music", {480,650},60, 5,WHITE);
     DrawTextureRec(toggle,toggle_btn.getBtn(), 
                    toggle_btn.getPos(), WHITE);
+
     EndDrawing();
 }
 void Options::LoadPrev(){
