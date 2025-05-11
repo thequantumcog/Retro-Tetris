@@ -7,7 +7,7 @@ using namespace std;
 
 
 Options::Options(ResourceManager* r, bool& Menu, int * startingLevel, bool * music): res(r), 
-    back_btn(600,1000,262,255,3,&Menu),save_btn(1000,1000,262,255,3,&Save),toggle_btn(1000,450,189,95,2,music){
+    back_btn(600,1000,262,255,3,&Menu),save_btn(1000,1000,262,255,3,&Save),toggle_btn(1200,650,189,95,2,music){
     this->startingLevel = startingLevel;
     *startingLevel=1;
     this->music = music;
@@ -17,6 +17,7 @@ Options::Options(ResourceManager* r, bool& Menu, int * startingLevel, bool * mus
     level = LoadTexture("assets/options/level.png");
     toggle = LoadTexture("assets/options/toggle.png");
     selector = LoadTexture("assets/options/selector.png");
+    selection = LoadTexture("assets/options/selector.png");
     list = Selected::LEVEL;
     LoadPrev();
 
@@ -116,13 +117,13 @@ void Options::draw(){
     BeginDrawing();
     ClearBackground(RAYWHITE);
     DrawTexture(background,0,0,WHITE);
-    DrawTextEx(res->font(),"Music", {700,450},60, 5,WHITE);
-    DrawTexture(level, 470, 250,WHITE);
-    DrawTexture(selector,560 + (*startingLevel)*105, 250, WHITE);
+    DrawTexture(selector,560 + (*startingLevel)*105, 450, WHITE);
+    DrawTexture(level, 470, 450,WHITE);
     DrawTextureRec(back, back_btn.getBtn(), 
                    back_btn.getPos(), WHITE);
     DrawTextureRec(save, save_btn.getBtn(), 
                    save_btn.getPos(), WHITE);
+    DrawTextEx(res->font(),"Music", {480,650},60, 5,WHITE);
     DrawTextureRec(toggle,toggle_btn.getBtn(), 
                    toggle_btn.getPos(), WHITE);
     EndDrawing();
@@ -146,4 +147,5 @@ Options::~Options(){
     UnloadTexture(level);
     UnloadTexture(toggle);
     UnloadTexture(selector);
+    UnloadTexture(selection);
 }

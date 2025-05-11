@@ -9,6 +9,7 @@ Game::Game(ResourceManager* r, bool& Menu, int * startingLevel):startingLevel(st
 void Game::run_game(){
     if(!initializationDone){
         info[2] = *startingLevel; // set level=previous stored
+        info[0] = -10;
         current_piece->set_speed(*startingLevel);
         initializationDone=1;
     }
@@ -19,11 +20,12 @@ void Game::run_game(){
     if(!gameover_screen->isGameOver()){
         if(grid.level_updates())
             current_piece->set_speed(level);
-        if(info[2] > 8){
+        if(info[2] > 8){ // agar level 8 se bara tu reset kro
             info[2] = *startingLevel;
             current_piece->set_speed(level);
         } 
         if(!current_piece->is_being_dropped()){
+            info[0] += 10;
             drop_next_piece();
         }
         current_piece->move_down();
