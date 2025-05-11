@@ -11,11 +11,11 @@ void MENU::display_menu(){
     draw_menu();
 }
 void MENU::draw_menu(){
-    int offset = 120*(int)menu_selection;
+    int offset = 63*(int)menu_selection;
     BeginDrawing();
     ClearBackground(BLACK);
     DrawTexture(menu[0], 0, 0, WHITE);
-    DrawTexture(menu[1], 780, 835+offset, WHITE);
+    DrawTexture(menu[1], 790, 800+offset, WHITE);
     EndDrawing();
 }
 void MENU::handle_inputs(){
