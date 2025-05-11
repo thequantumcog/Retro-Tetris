@@ -2,6 +2,7 @@
 #include "resources.h"
 #include <fstream>
 #include <raylib.h>
+#include <iostream>
 using namespace std;
 
 Options::Options(ResourceManager* r, bool& Menu, int * startingLevel, bool * music): res(r), 
@@ -156,10 +157,11 @@ void Options::draw(){
     EndDrawing();
 }
 void Options::LoadPrev(){
-    fstream write("options.txt",ios::in);
-    write >> *startingLevel;
-    write >> *music;
-    write.close();
+    fstream read("options.txt",ios::in);
+    read >> *startingLevel;
+    read >> *music;
+    std::cout << *music << endl;
+    read.close();
 }
 void Options::Write(){
     fstream write("options.txt",ios::out);

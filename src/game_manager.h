@@ -10,7 +10,7 @@ class GameManager{
     const int screenWidth = 1920;
     const int screenHeight = 1080;
     int startingLevel;
-    bool music;
+    bool music=0;
     MENU *main_menu;
     Game *game;
     Score *score_menu;

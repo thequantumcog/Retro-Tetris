@@ -60,7 +60,7 @@ public:
         controlVar = !controlVar;
     }
     Rectangle getBtn(){
-        if(controlVar){
+        if(!controlVar){
             return button[1];
         }
         return button[0];

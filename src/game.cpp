@@ -1,15 +1,18 @@
 #include "game.h"
+#include <raylib.h>
+#include <string>
 
-Game::Game(ResourceManager* r, bool& Menu, int * startingLevel):startingLevel(startingLevel), grid(info), res(r), backtomenu(Menu){
+Game::Game(ResourceManager* r, bool& Menu, int * startingLevel,Score * score_list):startingLevel(startingLevel), grid(info), res(r), backtomenu(Menu){
     gameover_screen = new GameOverScreen(res);
+    this->score_list = score_list;
     holding_piece = nullptr;
     current_piece = create_a_random_piece();
     for(int i=0;i<NEXT_PIECES_COUNT;i++) next_pieces_array[i] = create_a_random_piece();
+    info[0] = -10; 
 }
 void Game::run_game(){
     if(!initializationDone){
         info[2] = *startingLevel; // set level=previous stored
-        info[0] = -10;
         current_piece->set_speed(*startingLevel);
         initializationDone=1;
     }
@@ -25,8 +28,8 @@ void Game::run_game(){
             current_piece->set_speed(level);
         } 
         if(!current_piece->is_being_dropped()){
-            info[0] += 10;
             drop_next_piece();
+            info[0] += 10;
         }
         current_piece->move_down();
     }
@@ -38,26 +41,22 @@ void Game::run_game(){
 void Game::reset_after_gameOver(){
     grid.Reset();
     current_piece->reset_gameOver();
-    for(int i=0;i<2;i++){
-        info[i] = 0;
-    }
+    info[0] = 0;
+    info[1] = 0;
     info[2] = *startingLevel;
     gameover_screen->set_GameOver(0);
-    initializationDone=0;
+    initializationDone = 0;
 }
 void Game::handle_inputs(){
-    if(!gameover_screen->isGameOver())
+    if(!gameover_screen->isGameOver()){
         game_inputs();
-    else if(gameover_screen->isGameOver()) {
-        gameover_screen->getInput();
-        if(IsKeyPressed(KEY_ENTER)){
-            reset_after_gameOver();
-        }
-        else if(IsKeyPressed(KEY_M)){
-            reset_after_gameOver();
-            backtomenu=1;
-
-        }
+        return;
+    }
+    std::string name = gameover_screen->getInput();
+    if(IsKeyPressed(KEY_ENTER) || IsKeyPressed(KEY_M)){
+        if(name != "") score_list->update(name,info[0]);
+        reset_after_gameOver();
+        if(IsKeyPressed(KEY_M))backtomenu=1;
     }
 }
 void Game::game_inputs(){
@@ -96,7 +95,6 @@ Shape * Game::create_a_random_piece(){
             break;
     }
     return new_piece;
-    // return new Tetrimon_I(grid);
 }
 void Game::drop_next_piece(){
             if(current_piece) delete current_piece;
