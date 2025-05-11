@@ -6,16 +6,15 @@ using namespace std;
 
 GameOverScreen::GameOverScreen(ResourceManager * res){
     this->res = res;
+textBox = { screenWidth/2.0f - 200, screenHeight/2.0f+150, 300, 50 };
 }
-void GameOverScreen::getInput()
-{
-    if (CheckCollisionPointRec(GetMousePosition(), textBox)) mouseOnText = true;
-    else mouseOnText = false;
+std::string GameOverScreen::getInput(){
+    mouseOnText = CheckCollisionPointRec(GetMousePosition(), textBox);
+    SetMouseCursor(mouseOnText ? MOUSE_CURSOR_IBEAM : MOUSE_CURSOR_DEFAULT);
     if (mouseOnText){
         SetMouseCursor(MOUSE_CURSOR_IBEAM);
         int key = GetCharPressed();
-        while (key > 0)
-        {
+        while (key > 0){
             // NOTE: Only allow keys in range [32..125]
             if ((key >= 32) && (key <= 125) && (key != 59)&& (name.size() < MAX_INPUT_CHARS)){
                 name += (char)key;
@@ -31,15 +30,14 @@ void GameOverScreen::getInput()
                     name.resize(name.size()-1);
             }
         }
-        else
-        backspaceHoldCounter=0;
+        else  backspaceHoldCounter=0;
 
-        if(IsKeyReleased(KEY_ENTER)){
+    if(IsKeyPressed(KEY_ENTER)){
             if(name.empty() || isWhitespace(name))
                 name = "Anonymous";
             else{
                 name[0] = toupper(name[0]);
-                for(int i=1;i<name.size();i++){
+                for(size_t i=1;i<name.size();i++){
                     if(i-1>0 && name[i-1] == ' '){
                         name[i] = toupper(name[i]);
                     }
@@ -47,16 +45,14 @@ void GameOverScreen::getInput()
                     name[i] = tolower(name[i]);
                 }
             }
-            gameOver=0;
+            return name;
         }
-    }
-    else {
-        SetMouseCursor(MOUSE_CURSOR_DEFAULT);
     }
 
     if (mouseOnText) framesCounter++;
     else framesCounter = 0;
 
+    return "";
 }
 
 void GameOverScreen::draw(){
@@ -65,7 +61,7 @@ void GameOverScreen::draw(){
     DrawRectangle(600, 0, 625, 1080, BLACK);
     DrawTexture(res->GameOver(), 720, 120, WHITE);
     Vector2 textSize = MeasureTextEx(res->font(), "Enter Your Name", 40, 2);
-    DrawTextEx(res->font(),"Enter Your Name ", (Vector2){screenWidth/2.0f-textSize.x/2.0f, screenHeight/2.0f-200}, 40,2, WHITE);
+    DrawTextEx(res->font(),"Enter Your Name ", (Vector2){screenWidth/2.0f-textSize.x/2.0f - 50, screenHeight/2.0f + 50}, 40,2, WHITE);
 
     DrawRectangleRec(textBox, LIGHTGRAY);
     if (mouseOnText) DrawRectangleLines((int)textBox.x, (int)textBox.y, (int)textBox.width, (int)textBox.height, BROWN);
@@ -85,7 +81,7 @@ void GameOverScreen::draw(){
 
 }
 bool GameOverScreen::isWhitespace(std::string s){
-    for(int index = 0; index < s.length(); index++){
+    for(size_t index = 0; index < s.length(); index++){
         if(!std::isspace(s[index]))
             return false;
     }

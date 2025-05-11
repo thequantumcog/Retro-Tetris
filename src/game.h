@@ -4,6 +4,7 @@
 #include "resources.h"
 #include "tetrimons.h"
 #include "game_over.h"
+#include "score.h"
 #include <raylib.h>
 class Game{
 private:
@@ -14,6 +15,7 @@ private:
     Shape * current_piece;
     Shape * holding_piece;
     Shape * next_pieces_array[NEXT_PIECES_COUNT];
+    Score * score_list;
     GameOverScreen *gameover_screen;
     ResourceManager * res;
     bool& backtomenu;
@@ -30,7 +32,7 @@ private:
     void reset_after_gameOver();
     // void do_if_gameOver();
 public:
-    Game(ResourceManager * res,bool& Menu, int * StartingLevel);
+    Game(ResourceManager * res,bool& Menu, int * StartingLevel, Score * score_list);
     void run_game();
     ~Game();
 

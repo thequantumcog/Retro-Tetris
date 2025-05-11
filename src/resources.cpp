@@ -42,6 +42,7 @@ ResourceManager::ResourceManager(){
     shadow_textures[5] = LoadTexture("assets/shadow/t.png");
     shadow_textures[6] = LoadTexture("assets/shadow/z.png");
     game_over = LoadTexture("assets/game_over.png");
+    theme = LoadMusicStream("assets/theme.mp3");
 
 }
 ResourceManager::~ResourceManager(){
@@ -56,6 +57,7 @@ ResourceManager::~ResourceManager(){
     UnloadTexture(game_background);
     UnloadFont(my_font);
     UnloadTexture(game_over);
+    UnloadMusicStream(theme);
 
 }
 Texture2D * ResourceManager::Blocks(){
@@ -79,4 +81,7 @@ Texture2D& ResourceManager::GameOver(){
 }
 Font& ResourceManager::font(){
     return my_font;
+}
+Music& ResourceManager::sound(){
+    return theme;
 }

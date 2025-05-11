@@ -9,6 +9,7 @@ class ResourceManager{
     Texture2D shadow_textures[7]; 
     Texture2D game_background;
     Texture2D game_over;
+    Music theme;
     Font my_font;
 public:
     ResourceManager();
@@ -20,5 +21,6 @@ public:
     Texture2D&  Game_Background();
     Texture2D&  GameOver();
     Font&  font();
+    Music& sound();
 };
 #endif

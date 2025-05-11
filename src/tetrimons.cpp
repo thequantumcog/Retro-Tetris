@@ -74,13 +74,8 @@ void Shape::rotate(){
     erase_current();
     tetris = temp;
 }
-// void Shape::increase_speed(double speed){
-//     gravitySpeed += speed;
-// }
 void Shape::set_speed(int level){
-    gravitySpeed = pow(gravitySpeed + 0.1,level-1);
-    //gravitySpeed = 1 / gravitySpeed;
-    cout << gravitySpeed << endl;
+    gravitySpeed = pow(1.2 + 0.1,level-1);
 }
 void Shape::move_down(){
     if(dropped){

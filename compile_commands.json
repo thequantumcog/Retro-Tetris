@@ -3,8 +3,6 @@
     "arguments": [
       "/usr/bin/g++",
       "-Wall",
-      "-Wall",
-      "-fsanitize=address",
       "-c",
       "-o",
       "obj/game.o",
@@ -18,8 +16,6 @@
     "arguments": [
       "/usr/bin/g++",
       "-Wall",
-      "-Wall",
-      "-fsanitize=address",
       "-c",
       "-o",
       "obj/game_manager.o",
@@ -33,8 +29,6 @@
     "arguments": [
       "/usr/bin/g++",
       "-Wall",
-      "-Wall",
-      "-fsanitize=address",
       "-c",
       "-o",
       "obj/game_over.o",
@@ -48,8 +42,6 @@
     "arguments": [
       "/usr/bin/g++",
       "-Wall",
-      "-Wall",
-      "-fsanitize=address",
       "-c",
       "-o",
       "obj/grid.o",
@@ -63,8 +55,6 @@
     "arguments": [
       "/usr/bin/g++",
       "-Wall",
-      "-Wall",
-      "-fsanitize=address",
       "-c",
       "-o",
       "obj/main.o",
@@ -78,8 +68,6 @@
     "arguments": [
       "/usr/bin/g++",
       "-Wall",
-      "-Wall",
-      "-fsanitize=address",
       "-c",
       "-o",
       "obj/menu.o",
@@ -93,8 +81,6 @@
     "arguments": [
       "/usr/bin/g++",
       "-Wall",
-      "-Wall",
-      "-fsanitize=address",
       "-c",
       "-o",
       "obj/options.o",
@@ -108,8 +94,6 @@
     "arguments": [
       "/usr/bin/g++",
       "-Wall",
-      "-Wall",
-      "-fsanitize=address",
       "-c",
       "-o",
       "obj/resources.o",
@@ -123,8 +107,6 @@
     "arguments": [
       "/usr/bin/g++",
       "-Wall",
-      "-Wall",
-      "-fsanitize=address",
       "-c",
       "-o",
       "obj/score.o",
@@ -138,8 +120,6 @@
     "arguments": [
       "/usr/bin/g++",
       "-Wall",
-      "-Wall",
-      "-fsanitize=address",
       "-c",
       "-o",
       "obj/tetrimons.o",

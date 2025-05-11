@@ -3,6 +3,7 @@
 #include "resources.h"
 #include <raylib.h>
 #include <string>
+#include "options.h"
 class GameOverScreen{
     const int screenWidth = 1920;
     const int screenHeight = 1080;
@@ -11,12 +12,13 @@ class GameOverScreen{
     int backspaceHoldCounter = 0;
     int framesCounter = 0;
     bool mouseOnText = false;
-    Rectangle textBox = { screenWidth/2.0f - 150, screenHeight/2.0f-100, 300, 50 };
+    Rectangle textBox ;
     bool gameOver=0;;
     bool isWhitespace(std::string);
+    btn back;
 public:
     GameOverScreen(ResourceManager * res);
-    void getInput();
+    std::string getInput();
     void draw();
     bool isGameOver();
     void set_GameOver(bool);

@@ -2,6 +2,7 @@
 #include <iostream>
 #include <fstream>
 #include <raylib.h>
+#include <stdexcept>
 
 Score::Score(ResourceManager * r,bool &Menu):  res(r),enableMenu(Menu){
     background = LoadTexture("assets/score_menu.png");
@@ -9,33 +10,33 @@ Score::Score(ResourceManager * r,bool &Menu):  res(r),enableMenu(Menu){
 
 }
 void Score::loadScores(){
-    int pbIndex;
-    std::string storeLine;
+    int curEntry;
+    std::string buffer;
     std::fstream obj(scoreFile,std::ios::in);
-    if(!obj){
-        std::cout << "NO FILE" << std::endl;
-        for(int i=0;i<3;i++){
-            scores[i][0] = "Anon";
-            scores[i][1] = "0";
-        }
-    }
-    //TODO: FIX
-    else{
-        pbIndex=0;
-        while(getline(obj,storeLine)){
+    // if(!obj){
+    //     std::cout << "NO FILE" << std::endl;
+    //     for(int i=0;i<3;i++){
+    //         scores[i][0] = "Anon";
+    //         scores[i][1] = "0";
+    //     }
+    // }
+    // //TODO: FIX, (I forgot what was this todo for)
+    // else{
+        curEntry=0;
+        while(getline(obj,buffer)){
 
             int start =0;
-            int containerID = 0;
-            for(size_t i=0;i<storeLine.length();i++){
-                if(storeLine[i] == ';'){
-                    scores[pbIndex][containerID] = storeLine.substr(start,i-start);
+            int goto_next = 0;
+            for(size_t i=0;i<buffer.length();i++){
+                if(buffer[i] == ';'){
+                    scores[curEntry][goto_next] = buffer.substr(start,i-start);
                     start = i+1;
-                    containerID++;
+                    goto_next++;
                 }
             }
-            pbIndex++;
+            curEntry++;
         }
-    }
+    // }
 
     obj.close();
 }
@@ -46,11 +47,14 @@ void Score::writeScores(){
     }
     write.close();
 }
-void Score::update(const std::string& name, const std::string& score){
-    int newScore = std::stoi(score);
+void Score::update(const std::string& name, int score){
+    int toComapre=0;
     int i=0;
+    std::cerr << score << std::endl;
     for(;i<3;i++){
-        if (newScore > stoi(scores[i][1]))
+        if(scores[i][1].empty()) toComapre =0;
+        else toComapre = stoi(scores[i][1]);
+        if (score > toComapre)
             break;
     }
     if(i < 3){
@@ -59,7 +63,7 @@ void Score::update(const std::string& name, const std::string& score){
             scores[j][1] = scores[j-1][1];
         }
         scores[i][0] = name;
-        scores[i][1] = score;
+        scores[i][1] = std::to_string(score);
     }
 
 }

@@ -1,17 +1,22 @@
 #include "game_manager.h"
+#include <raylib.h>
 GameManager::GameManager(){
     InitWindow(screenWidth, screenHeight, "Schrodinger's Tetris");
+    InitAudioDevice();
     SetTargetFPS(60);
     res = new ResourceManager();
     main_menu = new MENU();
     options_menu = new Options(res,main_menu->back(),&startingLevel,&music);
-    game = new Game(res,main_menu->back(),&startingLevel);
     score_menu = new Score(res,main_menu->back());
+    game = new Game(res,main_menu->back(),&startingLevel,score_menu);
+    SeekMusicStream(res->sound(), 25.0f);
 
 }
 void GameManager::game_loop(){
     bool exitWindow=0;
+    PlayMusicStream(res->sound());
     while (!WindowShouldClose() && !exitWindow) {
+        if(music) UpdateMusicStream(res->sound());
         switch(main_menu->get_action()){
         case MenuAction::None:
                 main_menu->display_menu();
@@ -37,5 +42,6 @@ GameManager::~GameManager(){
     delete score_menu;
     delete options_menu;
     delete res;
+    CloseAudioDevice();
     CloseWindow();
 }
