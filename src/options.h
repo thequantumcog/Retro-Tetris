@@ -30,6 +30,9 @@ public:
         clicked=1;
         controlVar = !controlVar;
     }
+    bool getState(){
+        return controlVar;
+    }
     void fakeclick(){
         clicked=1;
     }
@@ -68,7 +71,7 @@ public:
 
 };
 class Options{
-    ResourceManager* res;
+    OptionsRes * res;
     btn back_btn;
     btn save_btn;
     Toggle toggle_btn;
@@ -91,7 +94,7 @@ class Options{
     void Write();
     void reset_btns();
 public:
-    Options(ResourceManager* res,bool &gotoMenu, int * startingLevel, bool * music); 
+    Options(bool &gotoMenu, int * startingLevel, bool * music); 
     void LoadPrev();
     void di_options();
     ~Options();

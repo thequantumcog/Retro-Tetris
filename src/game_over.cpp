@@ -1,11 +1,14 @@
 #include "raylib.h"
+#include "resources.h"
 #include "game_over.h"
 using namespace std;
 #define MAX_INPUT_CHARS 30
 
 
-GameOverScreen::GameOverScreen(ResourceManager * res){
-    this->res = res;
+GameOverScreen::GameOverScreen(bool& ret, bool& restart): 
+    back_btn(600,1000,262,255,3,&ret)
+    ,restart_btn(1000,1000,262,255,3,&restart){
+    res = new GameOverRes;
 textBox = { screenWidth/2.0f - 200, screenHeight/2.0f+150, 300, 50 };
 }
 std::string GameOverScreen::getInput(){
@@ -19,7 +22,7 @@ std::string GameOverScreen::getInput(){
             if ((key >= 32) && (key <= 125) && (key != 59)&& (name.size() < MAX_INPUT_CHARS)){
                 name += (char)key;
             }
-            key = GetCharPressed();  // Check next character in the queue
+            key = GetCharPressed();  
         }
 
         // Backspace removes char plus hold removes all logic
@@ -54,14 +57,40 @@ std::string GameOverScreen::getInput(){
 
     return "";
 }
+void GameOverScreen::mouseinput(){
 
+    if (IsMouseButtonDown(MOUSE_BUTTON_LEFT)){
+        if (back_btn.isMouseHovering())
+            back_btn.fakeclick();
+        else if (restart_btn.isMouseHovering())
+            restart_btn.fakeclick();
+    }
+    else if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT)){
+        if (back_btn.isMouseHovering())
+            back_btn.clickbtn();
+        else if (restart_btn.isMouseHovering())
+                restart_btn.clickbtn();
+    }
+}
+
+void GameOverScreen::resetbtns(){
+    back_btn.resetbtn();
+    restart_btn.resetbtn();
+}
+GameOverScreen::~GameOverScreen(){
+    delete res;
+}
 void GameOverScreen::draw(){
-
-
     DrawRectangle(600, 0, 625, 1080, BLACK);
     DrawTexture(res->GameOver(), 720, 120, WHITE);
     Vector2 textSize = MeasureTextEx(res->font(), "Enter Your Name", 40, 2);
     DrawTextEx(res->font(),"Enter Your Name ", (Vector2){screenWidth/2.0f-textSize.x/2.0f - 50, screenHeight/2.0f + 50}, 40,2, WHITE);
+
+    DrawTextureRec(res->Back(), back_btn.getBtn(), 
+                   back_btn.getPos(), WHITE);
+
+    DrawTextureRec(res->Restart(), restart_btn.getBtn(), 
+                   restart_btn.getPos(), WHITE);
 
     DrawRectangleRec(textBox, LIGHTGRAY);
     if (mouseOnText) DrawRectangleLines((int)textBox.x, (int)textBox.y, (int)textBox.width, (int)textBox.height, BROWN);

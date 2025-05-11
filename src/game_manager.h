@@ -15,7 +15,7 @@ class GameManager{
     Game *game;
     Score *score_menu;
     Options* options_menu;
-    ResourceManager * res;
+    CommonRes * res;
 public:
     GameManager();
     void game_loop();

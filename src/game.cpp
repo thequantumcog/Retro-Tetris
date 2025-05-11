@@ -1,9 +1,11 @@
 #include "game.h"
+#include "resources.h"
 #include <raylib.h>
 #include <string>
 
-Game::Game(ResourceManager* r, bool& Menu, int * startingLevel,Score * score_list):startingLevel(startingLevel), grid(info), res(r), backtomenu(Menu){
-    gameover_screen = new GameOverScreen(res);
+Game::Game(bool& Menu, int * startingLevel,Score * score_list):startingLevel(startingLevel), grid(info), backtomenu(Menu){
+    res = new GameRes();
+    gameover_screen = new GameOverScreen(ret,restart);
     this->score_list = score_list;
     holding_piece = nullptr;
     current_piece = create_a_random_piece();
@@ -52,11 +54,18 @@ void Game::handle_inputs(){
         game_inputs();
         return;
     }
+    gameover_screen->mouseinput();
     std::string name = gameover_screen->getInput();
-    if(IsKeyPressed(KEY_ENTER) || IsKeyPressed(KEY_M)){
-        if(name != "") score_list->update(name,info[0]);
+        if(name != "" && !nameEntered){ 
+        score_list->update(name,info[0]);
+        nameEntered=1;
+    }
+    if(ret || restart){
         reset_after_gameOver();
-        if(IsKeyPressed(KEY_M))backtomenu=1;
+    if(ret){ backtomenu=1; ret=0;}
+    if (restart){     restart=0;}
+    gameover_screen->resetbtns();
+        nameEntered=0;
     }
 }
 void Game::game_inputs(){
@@ -154,5 +163,6 @@ void Game::draw(){
 Game::~Game(){
     for(int i=0;i<NEXT_PIECES_COUNT;i++) if(next_pieces_array[i]) delete next_pieces_array[i];
     if (current_piece) delete current_piece;
+    delete res;
     delete gameover_screen;
 }

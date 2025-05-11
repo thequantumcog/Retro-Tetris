@@ -5,18 +5,12 @@
 #include <iostream>
 using namespace std;
 
-Options::Options(ResourceManager* r, bool& Menu, int * startingLevel, bool * music): res(r), 
+Options::Options(bool& Menu, int * startingLevel, bool * music):  
     back_btn(600,1000,262,255,3,&Menu),save_btn(1000,1000,262,255,3,&Save),toggle_btn(1200,650,189,95,2,music){
+    res = new OptionsRes();
     this->startingLevel = startingLevel;
     *startingLevel=1;
     this->music = music;
-    background = LoadTexture("assets/options/options.png");
-    back = LoadTexture("assets/options/back.png");
-    save = LoadTexture("assets/options/save.png");
-    level = LoadTexture("assets/options/level.png");
-    toggle = LoadTexture("assets/options/toggle.png");
-    selector = LoadTexture("assets/options/selector.png");
-    selection = LoadTexture("assets/options/selection.png");
     list = Selected::LEVEL;
     LoadPrev();
 
@@ -138,20 +132,20 @@ void Options::input(){
 void Options::draw(){
     BeginDrawing();
     ClearBackground(RAYWHITE);
-    DrawTexture(background,0,0,WHITE);
-    DrawTexture(selection, 415, 490+(list == Selected::LEVEL ? 0 : 170), WHITE);
+    DrawTexture(res->Background(),0,0,WHITE);
+    DrawTexture(res->Selection(), 415, 490+(list == Selected::LEVEL ? 0 : 170), WHITE);
 
-    DrawTexture(selector,560 + (*startingLevel)*105, 450, WHITE);
-    DrawTexture(level, 470, 450,WHITE);
+    DrawTexture(res->Selector(),560 + (*startingLevel)*105, 450, WHITE);
+    DrawTexture(res->Level(), 470, 450,WHITE);
 
-    DrawTextureRec(back, back_btn.getBtn(), 
+    DrawTextureRec(res->Back(), back_btn.getBtn(), 
                    back_btn.getPos(), WHITE);
 
-    DrawTextureRec(save, save_btn.getBtn(), 
+    DrawTextureRec(res->Save(), save_btn.getBtn(), 
                    save_btn.getPos(), WHITE);
 
     DrawTextEx(res->font(),"Music", {480,650},60, 5,WHITE);
-    DrawTextureRec(toggle,toggle_btn.getBtn(), 
+    DrawTextureRec(res->Toggle(),toggle_btn.getBtn(), 
                    toggle_btn.getPos(), WHITE);
 
     EndDrawing();
@@ -160,7 +154,6 @@ void Options::LoadPrev(){
     fstream read("options.txt",ios::in);
     read >> *startingLevel;
     read >> *music;
-    std::cout << *music << endl;
     read.close();
 }
 void Options::Write(){
@@ -170,11 +163,5 @@ void Options::Write(){
     write.close();
 }
 Options::~Options(){
-    UnloadTexture(background);
-    UnloadTexture(back);
-    UnloadTexture(save);
-    UnloadTexture(level);
-    UnloadTexture(toggle);
-    UnloadTexture(selector);
-    UnloadTexture(selection);
+    delete res;
 }

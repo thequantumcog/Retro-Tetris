@@ -12,14 +12,16 @@ private:
     int *startingLevel;
     int info[3] = {};
     Grid grid;
+    GameRes * res;
     Shape * current_piece;
     Shape * holding_piece;
     Shape * next_pieces_array[NEXT_PIECES_COUNT];
     Score * score_list;
     GameOverScreen *gameover_screen;
-    ResourceManager * res;
     bool& backtomenu;
     bool initializationDone=0;
+    bool restart=0, ret=0;
+    bool nameEntered=0;
 
     void game_inputs();
     void handle_inputs();
@@ -32,7 +34,7 @@ private:
     void reset_after_gameOver();
     // void do_if_gameOver();
 public:
-    Game(ResourceManager * res,bool& Menu, int * StartingLevel, Score * score_list);
+    Game(bool& Menu, int * StartingLevel, Score * score_list);
     void run_game();
     ~Game();
 
