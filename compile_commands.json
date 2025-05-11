@@ -3,6 +3,8 @@
     "arguments": [
       "/usr/bin/g++",
       "-Wall",
+      "-Wall",
+      "-fsanitize=address",
       "-c",
       "-o",
       "obj/game.o",
@@ -16,6 +18,38 @@
     "arguments": [
       "/usr/bin/g++",
       "-Wall",
+      "-Wall",
+      "-fsanitize=address",
+      "-c",
+      "-o",
+      "obj/game_manager.o",
+      "src/game_manager.cpp"
+    ],
+    "directory": "/home/ar0177417/Downloads/UNI/OOP/project",
+    "file": "/home/ar0177417/Downloads/UNI/OOP/project/src/game_manager.cpp",
+    "output": "/home/ar0177417/Downloads/UNI/OOP/project/obj/game_manager.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-Wall",
+      "-Wall",
+      "-fsanitize=address",
+      "-c",
+      "-o",
+      "obj/game_over.o",
+      "src/game_over.cpp"
+    ],
+    "directory": "/home/ar0177417/Downloads/UNI/OOP/project",
+    "file": "/home/ar0177417/Downloads/UNI/OOP/project/src/game_over.cpp",
+    "output": "/home/ar0177417/Downloads/UNI/OOP/project/obj/game_over.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-Wall",
+      "-Wall",
+      "-fsanitize=address",
       "-c",
       "-o",
       "obj/grid.o",
@@ -29,6 +63,8 @@
     "arguments": [
       "/usr/bin/g++",
       "-Wall",
+      "-Wall",
+      "-fsanitize=address",
       "-c",
       "-o",
       "obj/main.o",
@@ -42,6 +78,8 @@
     "arguments": [
       "/usr/bin/g++",
       "-Wall",
+      "-Wall",
+      "-fsanitize=address",
       "-c",
       "-o",
       "obj/menu.o",
@@ -55,6 +93,23 @@
     "arguments": [
       "/usr/bin/g++",
       "-Wall",
+      "-Wall",
+      "-fsanitize=address",
+      "-c",
+      "-o",
+      "obj/options.o",
+      "src/options.cpp"
+    ],
+    "directory": "/home/ar0177417/Downloads/UNI/OOP/project",
+    "file": "/home/ar0177417/Downloads/UNI/OOP/project/src/options.cpp",
+    "output": "/home/ar0177417/Downloads/UNI/OOP/project/obj/options.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-Wall",
+      "-Wall",
+      "-fsanitize=address",
       "-c",
       "-o",
       "obj/resources.o",
@@ -68,13 +123,30 @@
     "arguments": [
       "/usr/bin/g++",
       "-Wall",
+      "-Wall",
+      "-fsanitize=address",
       "-c",
       "-o",
-      "obj/shapes.o",
-      "src/shapes.cpp"
+      "obj/score.o",
+      "src/score.cpp"
     ],
     "directory": "/home/ar0177417/Downloads/UNI/OOP/project",
-    "file": "/home/ar0177417/Downloads/UNI/OOP/project/src/shapes.cpp",
-    "output": "/home/ar0177417/Downloads/UNI/OOP/project/obj/shapes.o"
+    "file": "/home/ar0177417/Downloads/UNI/OOP/project/src/score.cpp",
+    "output": "/home/ar0177417/Downloads/UNI/OOP/project/obj/score.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-Wall",
+      "-Wall",
+      "-fsanitize=address",
+      "-c",
+      "-o",
+      "obj/tetrimons.o",
+      "src/tetrimons.cpp"
+    ],
+    "directory": "/home/ar0177417/Downloads/UNI/OOP/project",
+    "file": "/home/ar0177417/Downloads/UNI/OOP/project/src/tetrimons.cpp",
+    "output": "/home/ar0177417/Downloads/UNI/OOP/project/obj/tetrimons.o"
   }
 ]

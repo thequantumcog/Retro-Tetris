@@ -2,7 +2,7 @@
 #include <raylib.h>
 ResourceManager::ResourceManager(){
     my_font = LoadFont("assets/pixelated.ttf");
-    background= LoadTexture("assets/background.png");
+    game_background= LoadTexture("assets/background.png");
     block_textures[0] = LoadTexture("assets/i_block.png");
     block_textures[1] = LoadTexture("assets/i_block_solid.png");
     block_textures[2] = LoadTexture("assets/j_block.png");
@@ -53,7 +53,7 @@ ResourceManager::~ResourceManager(){
         UnloadTexture(hold_textures[i]);
         UnloadTexture(shadow_textures[i]);
     }
-    UnloadTexture(background);
+    UnloadTexture(game_background);
     UnloadFont(my_font);
     UnloadTexture(game_over);
 
@@ -71,8 +71,8 @@ Texture2D * ResourceManager::Next(){
 Texture2D * ResourceManager::Hold(){
     return hold_textures;
 }
-Texture2D& ResourceManager::Background(){
-    return background;
+Texture2D& ResourceManager::Game_Background(){
+    return game_background;
 }
 Texture2D& ResourceManager::GameOver(){
     return game_over;
