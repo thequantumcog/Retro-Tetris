@@ -7,7 +7,7 @@ class ResourceManager{
     Texture2D hold_textures[7]; 
     Texture2D next_textures[7]; 
     Texture2D shadow_textures[7]; 
-    Texture2D background;
+    Texture2D game_background;
     Texture2D game_over;
     Font my_font;
 public:
@@ -17,7 +17,7 @@ public:
     Texture2D * Hold();
     Texture2D * Next();
     Texture2D * Shadow();
-    Texture2D&  Background();
+    Texture2D&  Game_Background();
     Texture2D&  GameOver();
     Font&  font();
 };

@@ -1,32 +1,28 @@
 #ifndef GAME_H
 #define GAME_H
 #include "grid.h"
-#include "tetrimons.h"
-#include "menu.h"
-#include "game_over.h"
 #include "resources.h"
-#include "score.h"
+#include "tetrimons.h"
+#include "game_over.h"
 #include <raylib.h>
 class Game{
 private:
-    const int screenWidth = 1920;
-    const int screenHeight = 1080;
     static const int NEXT_PIECES_COUNT = 3;
+    int *startingLevel;
     int info[3] = {};
     Grid grid;
     Shape * current_piece;
     Shape * holding_piece;
     Shape * next_pieces_array[NEXT_PIECES_COUNT];
-    MENU *main_menu;
-    Score *score_menu;
     GameOverScreen *gameover_screen;
     ResourceManager * res;
+    bool& backtomenu;
+    bool initializationDone=0;
 
     void game_inputs();
     void handle_inputs();
     void draw();
     void draw_info();
-    void run_game();
     Shape * create_a_random_piece();
     void drop_next_piece();
     void hold_piece();
@@ -34,8 +30,8 @@ private:
     void reset_after_gameOver();
     // void do_if_gameOver();
 public:
-    Game();
-    void game_loop();
+    Game(ResourceManager * res,bool& Menu, int * StartingLevel);
+    void run_game();
     ~Game();
 
 };

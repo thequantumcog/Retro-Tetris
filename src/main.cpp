@@ -1,7 +1,7 @@
-#include "game.h"
+#include "game_manager.h"
 
 int main(){
-    Game Tetris;
-    Tetris.game_loop();
+    GameManager TetrisGame;
+    TetrisGame.game_loop();
     return 0;
 }

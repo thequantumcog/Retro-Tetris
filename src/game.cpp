@@ -1,45 +1,17 @@
 #include "game.h"
-#include "menu.h"
-#include "game_over.h"
-#include <raylib.h>
 
-Game::Game(): grid(info){
-    InitWindow(screenWidth, screenHeight, "Schrodinger's Tetris");
-    SetTargetFPS(60);
-    res = new ResourceManager();
-    main_menu = new MENU();
-    score_menu = new Score(main_menu->back());
+Game::Game(ResourceManager* r, bool& Menu, int * startingLevel):startingLevel(startingLevel), grid(info), res(r), backtomenu(Menu){
     gameover_screen = new GameOverScreen(res);
-
-}
-void Game::game_loop(){
-    info[2] = 1; // set level=1
     holding_piece = nullptr;
     current_piece = create_a_random_piece();
     for(int i=0;i<NEXT_PIECES_COUNT;i++) next_pieces_array[i] = create_a_random_piece();
-
-    bool exitWindow=0;
-    while (!WindowShouldClose() && !exitWindow) {
-        switch(main_menu->get_action()){
-        case MenuAction::None:
-                main_menu->display_menu();
-            break;
-        case MenuAction::Start:
-                run_game();
-            break;
-        case MenuAction::Score:
-                score_menu->display();
-            break;
-        case MenuAction::Options:
-                score_menu->display();
-            break;
-        case MenuAction::Exit:
-                exitWindow=1;
-            break;
-        }
-    }
 }
 void Game::run_game(){
+    if(!initializationDone){
+        info[2] = *startingLevel; // set level=previous stored
+        current_piece->set_speed(*startingLevel);
+        initializationDone=1;
+    }
     int& level = info[2];
     if(current_piece->notPlaceable()){
         gameover_screen->set_GameOver(1);
@@ -48,7 +20,7 @@ void Game::run_game(){
         if(grid.level_updates())
             current_piece->set_speed(level);
         if(info[2] > 8){
-            info[2] = 1;
+            info[2] = *startingLevel;
             current_piece->set_speed(level);
         } 
         if(!current_piece->is_being_dropped()){
@@ -64,10 +36,12 @@ void Game::run_game(){
 void Game::reset_after_gameOver(){
     grid.Reset();
     current_piece->reset_gameOver();
-    for(int i=0;i<3;i++){
+    for(int i=0;i<2;i++){
         info[i] = 0;
     }
+    info[2] = *startingLevel;
     gameover_screen->set_GameOver(0);
+    initializationDone=0;
 }
 void Game::handle_inputs(){
     if(!gameover_screen->isGameOver())
@@ -78,8 +52,8 @@ void Game::handle_inputs(){
             reset_after_gameOver();
         }
         else if(IsKeyPressed(KEY_M)){
-            main_menu->set_open();
             reset_after_gameOver();
+            backtomenu=1;
 
         }
     }
@@ -169,7 +143,7 @@ void Game::draw(){
     current_piece->place();
     BeginDrawing();
     ClearBackground(WHITE);
-    DrawTexture(res->Background(), 0, 0, WHITE);
+    DrawTexture(res->Game_Background(), 0, 0, WHITE);
     grid.draw(res->Blocks(),res->Shadow());
     draw_info();
     if(gameover_screen->isGameOver()){
@@ -180,9 +154,5 @@ void Game::draw(){
 Game::~Game(){
     for(int i=0;i<NEXT_PIECES_COUNT;i++) if(next_pieces_array[i]) delete next_pieces_array[i];
     if (current_piece) delete current_piece;
-    delete res;
-    delete main_menu;
-    delete score_menu;
     delete gameover_screen;
-    CloseWindow();
 }
