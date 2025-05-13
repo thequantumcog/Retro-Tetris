@@ -1,9 +1,8 @@
 #include "tetrimons.h"
 #include <math.h>
-#include <raylib.h>
 using namespace std;
 
-double Shape::gravitySpeed = 1.2;
+double Shape::gravitySpeed = 1.2; //1.2 blocks per sec
 bool Shape::not_placeable=0;
 
 void Shape::erase_current(){
@@ -126,7 +125,7 @@ void Shape::reset_gameOver(){
 }
 Tetrimon_I::Tetrimon_I(Grid & g): Shape(g){
     tetrimon_color = 0;
-    correction_values[0]={-30,20};
+    correction_values[0]={-30,20}; // meri photoshop skills achi nahin 😅
     correction_values[1] = {-15,23};
 
     rotation[0] = (Vector2[]){{1, 0}, {1, 1}, {1, 2},{1, 3}};

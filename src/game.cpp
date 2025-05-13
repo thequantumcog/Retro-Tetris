@@ -1,7 +1,6 @@
 #include "game.h"
 #include "resources.h"
-#include <raylib.h>
-#include <string>
+using namespace std;
 
 Game::Game(bool& Menu, int * startingLevel,Score * score_list):startingLevel(startingLevel), grid(info), backtomenu(Menu){
     res = new GameRes();
@@ -12,12 +11,15 @@ Game::Game(bool& Menu, int * startingLevel,Score * score_list):startingLevel(sta
     for(int i=0;i<NEXT_PIECES_COUNT;i++) next_pieces_array[i] = create_a_random_piece();
     info[0] = -10; 
 }
-void Game::run_game(){
+void Game::do_initialization(){
     if(!initializationDone){
         info[2] = *startingLevel; // set level=previous stored
         current_piece->set_speed(*startingLevel);
         initializationDone=1;
     }
+}
+void Game::run_game(){
+    do_initialization();
     int& level = info[2];
     if(current_piece->notPlaceable()){
         gameover_screen->set_GameOver(1);
@@ -43,9 +45,7 @@ void Game::run_game(){
 void Game::reset_after_gameOver(){
     grid.Reset();
     current_piece->reset_gameOver();
-    info[0] = 0;
-    info[1] = 0;
-    info[2] = *startingLevel;
+    info[0] = 0, info[1] = 0, info[2] = *startingLevel;
     gameover_screen->set_GameOver(0);
     initializationDone = 0;
 }
@@ -53,18 +53,18 @@ void Game::handle_inputs(){
     if(!gameover_screen->isGameOver()){
         game_inputs();
         return;
-    }
+    } // otherwise game_over wale inputs handle kro
     gameover_screen->mouseinput();
     std::string name = gameover_screen->getInput();
-        if(name != "" && !nameEntered){ 
+    if(name != "" && !nameEntered){ 
         score_list->update(name,info[0]);
         nameEntered=1;
     }
     if(ret || restart){
         reset_after_gameOver();
-    if(ret){ backtomenu=1; ret=0;}
-    if (restart){     restart=0;}
-    gameover_screen->resetbtns();
+        if(ret){ backtomenu=1; ret=0;}
+        if (restart){     restart=0;}
+        gameover_screen->resetbtns();
         nameEntered=0;
     }
 }

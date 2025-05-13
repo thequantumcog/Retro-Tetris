@@ -1,6 +1,5 @@
 #include "raylib.h"
 #include "grid.h"
-using namespace std;
 
 Grid::Grid(int * info) : game_score(info[0]), lines_completed(info[1]), level(info[2]) {
     rows = 22;
@@ -97,7 +96,7 @@ void Grid::draw(Texture2D * block_textures, Texture2D * shadow_textures){
                 DrawTextureV(block_textures[actual_grid[i][j].getColor()],pos, WHITE);
             }
             else if(actual_grid[i][j].value() == 2)  DrawTextureV(block_textures[actual_grid[i][j].getColor()], pos,WHITE);
-            else if(actual_grid[i][j].value() == 3)  DrawTextureV(shadow_textures[actual_grid[i][j].getColor()/2], pos,WHITE);
+            else if(actual_grid[i][j].value() == 3)  DrawTextureV(shadow_textures[actual_grid[i][j].getColor()/2], pos,WHITE); // shadow tecture is half of block
         }
 
     }

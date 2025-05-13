@@ -1,21 +1,26 @@
-#include "raylib.h"
 #include "resources.h"
 #include "game_over.h"
 using namespace std;
 #define MAX_INPUT_CHARS 30
 
+// private helper functions
+bool GameOverScreen::isWhitespace(std::string s){
+    for(size_t index = 0; index < s.length(); index++){
+        if(!std::isspace(s[index]))
+            return false;
+    }
+    return true;
+}
 
 GameOverScreen::GameOverScreen(bool& ret, bool& restart): 
-    back_btn(600,1000,262,255,3,&ret)
-    ,restart_btn(1000,1000,262,255,3,&restart){
+    back_btn(610,1000,262,255,3,&ret) ,restart_btn(950,1000,262,255,3,&restart),ret(ret), restart(restart){
     res = new GameOverRes;
-textBox = { screenWidth/2.0f - 200, screenHeight/2.0f+150, 300, 50 };
+    textBox = { screenWidth/2.0f - 200, screenHeight/2.0f+150, 300, 50 };
 }
 std::string GameOverScreen::getInput(){
     mouseOnText = CheckCollisionPointRec(GetMousePosition(), textBox);
     SetMouseCursor(mouseOnText ? MOUSE_CURSOR_IBEAM : MOUSE_CURSOR_DEFAULT);
     if (mouseOnText){
-        SetMouseCursor(MOUSE_CURSOR_IBEAM);
         int key = GetCharPressed();
         while (key > 0){
             // NOTE: Only allow keys in range [32..125]
@@ -25,40 +30,36 @@ std::string GameOverScreen::getInput(){
             key = GetCharPressed();  
         }
 
-        // Backspace removes char plus hold removes all logic
         if (IsKeyDown(KEY_BACKSPACE)) {
             backspaceHoldCounter++;
             if(backspaceHoldCounter ==1 || (backspaceHoldCounter> 10 && backspaceHoldCounter % 2 == 0)){
                 if(!name.empty())
-                    name.resize(name.size()-1);
+                    name.pop_back(); // akhri element remove krdo
             }
         }
         else  backspaceHoldCounter=0;
 
-    if(IsKeyPressed(KEY_ENTER)){
-            if(name.empty() || isWhitespace(name))
-                name = "Anonymous";
-            else{
-                name[0] = toupper(name[0]);
-                for(size_t i=1;i<name.size();i++){
-                    if(i-1>0 && name[i-1] == ' '){
-                        name[i] = toupper(name[i]);
-                    }
-                    else
-                    name[i] = tolower(name[i]);
-                }
-            }
-            return name;
-        }
     }
-
     if (mouseOnText) framesCounter++;
     else framesCounter = 0;
-
+    if(IsKeyPressed(KEY_ENTER) || ret || restart){ // agar in mein se kuch bhi ho
+        if(name.empty() || isWhitespace(name))
+            name = "Anonymous";
+        else{
+            name[0] = toupper(name[0]);
+            for(size_t i=1;i<name.size();i++){
+                if(i-1>0 && name[i-1] == ' '){
+                    name[i] = toupper(name[i]);
+                }
+                else
+                name[i] = tolower(name[i]);
+            }
+        }
+        return name;
+    }
     return "";
 }
 void GameOverScreen::mouseinput(){
-
     if (IsMouseButtonDown(MOUSE_BUTTON_LEFT)){
         if (back_btn.isMouseHovering())
             back_btn.fakeclick();
@@ -76,9 +77,6 @@ void GameOverScreen::mouseinput(){
 void GameOverScreen::resetbtns(){
     back_btn.resetbtn();
     restart_btn.resetbtn();
-}
-GameOverScreen::~GameOverScreen(){
-    delete res;
 }
 void GameOverScreen::draw(){
     DrawRectangle(600, 0, 625, 1080, BLACK);
@@ -109,13 +107,7 @@ void GameOverScreen::draw(){
     }
 
 }
-bool GameOverScreen::isWhitespace(std::string s){
-    for(size_t index = 0; index < s.length(); index++){
-        if(!std::isspace(s[index]))
-            return false;
-    }
-    return true;
-}
+// getter setters
 bool GameOverScreen::isGameOver(){
     if(gameOver)
         return 1;
@@ -123,4 +115,7 @@ bool GameOverScreen::isGameOver(){
 }
 void GameOverScreen::set_GameOver(bool x){
     gameOver =x;
+}
+GameOverScreen::~GameOverScreen(){
+    delete res;
 }

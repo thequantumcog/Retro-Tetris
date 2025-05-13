@@ -1,29 +1,7 @@
 #ifndef TETRIS_H
 #define  TETRIS_H
-#include <iostream>
-#include <raylib.h>
 #include "grid.h"
-using namespace std;
-const int TETROMINO_MAX_BLOCKS =4;
-class Piece{
-private:
-    Vector2 actual_piece[4];
-public:
-    Piece(Vector2 arr[4]){
-        for(int i=0;i<TETROMINO_MAX_BLOCKS;i++){
-            actual_piece[i] = arr[i];
-        }
-    }
-    Piece(){}
-    Vector2& operator[](int i){
-        return actual_piece[i];
-    }
-    void operator=(Vector2 arr[4]){
-        for(int i=0;i<TETROMINO_MAX_BLOCKS;i++){
-            actual_piece[i] = arr[i];
-        }
-    }
-};
+#include "helpers/piece.cpp"
 class Shape{
 protected:
     Piece tetris;
@@ -43,14 +21,12 @@ public:
     virtual ~Shape(){};
     bool move(int x, int y);
     void place();
-    // void draw_shadow();
     void erase_current();
     void move_down();
     void solidify();
     bool would_collide(Piece& cur_orient,int dx,int dy);
     void drop_piece(bool drop);
     void hard_drop();
-    // void increase_speed(double speed=5);
     void set_speed(int level=1);
     // getters
     bool is_being_dropped();

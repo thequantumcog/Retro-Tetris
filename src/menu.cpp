@@ -1,6 +1,5 @@
 #include "menu.h"
 #include "resources.h"
-#include <raylib.h>
 
 MENU::MENU(){
     res = new MenuRes();

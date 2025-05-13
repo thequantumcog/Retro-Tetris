@@ -1,8 +1,5 @@
-#include "options.h"
-#include "resources.h"
 #include <fstream>
-#include <raylib.h>
-#include <iostream>
+#include "options.h"
 using namespace std;
 
 Options::Options(bool& Menu, int * startingLevel, bool * music):  
@@ -25,6 +22,11 @@ void Options::di_options(){
     draw();
     reset_btns();
 
+}
+void Options::save_options(){
+        Write();
+        back_btn.clickbtn();
+        Save=0;
 }
 void Options::logic(){
 static Selected prevSelected = Selected::NONE;
@@ -81,6 +83,7 @@ switch (list) {
                 save_btn.clickbtn();      
                 save_btn.togglefocus();
                 list = Selected::NONE;
+                save_options();
             }
         break;
 
@@ -123,11 +126,6 @@ void Options::input(){
     handle_keyboard();
     handle_mouse();
 
-    if(Save){
-        Write();
-        back_btn.clickbtn();
-        Save=0;
-    }
 }
 void Options::draw(){
     BeginDrawing();

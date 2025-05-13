@@ -1,8 +1,7 @@
 #ifndef GRID_H
 #define GRID_H
-#include <iostream>
 #include "raylib.h"
-using namespace std;
+
 class Cell{
     int color;
     int state=0;
@@ -33,15 +32,13 @@ class Grid {
     int& level;
     int level_threshold;
 
-public:
-    Grid(int * info);
-    Cell ** getGrid();
-    void Reset();
-    // Cell& getGridBlock(int x, int y);
-    int  getBlockSize();
-    Cell * operator[](int x);
     bool is_line_full(int i);
     void delete_line(int i);
+public:
+    Grid(int * info);
+    void Reset();
+    int  getBlockSize();
+    Cell * operator[](int x);
     Vector2 getBounds();
     bool level_updates();
     bool is_game_over();

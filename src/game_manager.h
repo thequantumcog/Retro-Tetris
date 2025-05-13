@@ -4,7 +4,6 @@
 #include "resources.h"
 #include "score.h"
 #include "options.h"
-#include <raylib.h>
 #include "game.h"
 class GameManager{
     const int screenWidth = 1920;
