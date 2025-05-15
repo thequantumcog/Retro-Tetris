@@ -19,6 +19,8 @@ class GameOverScreen{
     bool& ret, restart;
 
     bool isWhitespace(std::string);
+    void mouseinput();
+    void keyboardinput();
 public:
     GameOverScreen(bool& gotoMenu, bool& reset);
     ~GameOverScreen();
@@ -27,7 +29,7 @@ public:
     bool isGameOver();
     bool operator!();
     void set(bool);
-    void mouseinput();
+    void input();
     void resetbtns();
 
 };

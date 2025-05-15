@@ -33,18 +33,18 @@ static Selected prevSelected = Selected::NONE;
 
 if (prevSelected != list) {
     switch (prevSelected) {
-        case Selected::LEVEL:   /* do nothing */ break;
+        case Selected::LEVEL:   /* kuch na kro */ break;
         case Selected::MUSIC:  toggle_btn.togglefocus(); break;
         case Selected::BACK:   back_btn.togglefocus();   break;
         case Selected::SAVE:   save_btn.togglefocus();   break;
-        case Selected::NONE:   /* nothing to do */      break;
+        case Selected::NONE:   /* kuch na kro */      break;
     }
     switch (list) {
         case Selected::LEVEL:    break;
         case Selected::MUSIC:  toggle_btn.togglefocus(); break;
         case Selected::BACK:   back_btn.togglefocus();   break;
         case Selected::SAVE:   save_btn.togglefocus();   break;
-        case Selected::NONE:   /* nothing to do */      break;
+        case Selected::NONE:   /* kuch na kro */      break;
     }
 }
 

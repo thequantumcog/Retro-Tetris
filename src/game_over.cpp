@@ -1,5 +1,7 @@
 #include "resources.h"
+#include <raylib.h>
 #include "game_over.h"
+#include <iostream>
 using namespace std;
 #define MAX_INPUT_CHARS 30
 
@@ -74,6 +76,32 @@ void GameOverScreen::mouseinput(){
     }
 }
 
+void GameOverScreen::keyboardinput() {
+    static int selection = 0;
+    btn* buttons[2] = { &back_btn, &restart_btn };
+    if (selection == 0) {
+        if (IsKeyPressed(KEY_DOWN)) {
+            selection = 1;
+            buttons[0]->togglefocus();
+        }
+    }
+    else {
+        if (IsKeyPressed(KEY_LEFT) || IsKeyPressed(KEY_RIGHT)) {
+            buttons[selection - 1]->togglefocus();
+            selection = (selection == 1) ? 2 : 1;
+            buttons[selection - 1]->togglefocus();
+        }
+        else if (IsKeyPressed(KEY_ENTER)) {
+            buttons[selection - 1]->clickbtn();
+            buttons[selection - 1]->togglefocus();
+            selection = 0;
+        }
+    }
+}
+void GameOverScreen::input(){
+    mouseinput();
+    keyboardinput();
+}
 void GameOverScreen::resetbtns(){
     back_btn.resetbtn();
     restart_btn.resetbtn();

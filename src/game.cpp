@@ -54,7 +54,7 @@ void Game::handle_inputs(){
         game_inputs();
         return;
     } // otherwise game_over wale inputs handle kro
-    gameover->mouseinput();
+    gameover->input();
     std::string name = gameover->handle_textbox();
     if(name != "" && !nameEntered){ 
         score_db->update(name,info[0]);
