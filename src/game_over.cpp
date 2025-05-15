@@ -17,7 +17,7 @@ GameOverScreen::GameOverScreen(bool& ret, bool& restart):
     res = new GameOverRes;
     textBox = { screenWidth/2.0f - 200, screenHeight/2.0f+150, 300, 50 };
 }
-std::string GameOverScreen::getInput(){
+std::string GameOverScreen::handle_textbox(){
     mouseOnText = CheckCollisionPointRec(GetMousePosition(), textBox);
     SetMouseCursor(mouseOnText ? MOUSE_CURSOR_IBEAM : MOUSE_CURSOR_DEFAULT);
     if (mouseOnText){
@@ -113,9 +113,7 @@ bool GameOverScreen::isGameOver(){
         return 1;
     return 0;
 }
-void GameOverScreen::set_GameOver(bool x){
-    gameOver =x;
-}
-GameOverScreen::~GameOverScreen(){
-    delete res;
-}
+bool GameOverScreen::operator!()  {return !(isGameOver());}
+
+void GameOverScreen::set(bool x)  {gameOver =x;}
+GameOverScreen::~GameOverScreen() {delete res;}

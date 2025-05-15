@@ -10,26 +10,26 @@ void Score::loadScores(){
     int curEntry;
     std::string buffer;
     std::fstream obj(scoreFile,std::ios::in);
-        curEntry=0;
-        while(getline(obj,buffer)){
-            int start =0;
-            int goto_next = 0;
-            for(size_t i=0;i<buffer.length();i++){
-                if(buffer[i] == ';'){
-                    scores[curEntry][goto_next] = buffer.substr(start,i-start);
-                    start = i+1;
-                    goto_next++;
-                }
+    curEntry=0;
+    while(getline(obj,buffer)){
+        int start =0;
+        int goto_next = 0;
+        for(size_t i=0;i<buffer.length();i++){
+            if(buffer[i] == ';'){
+                scores[curEntry][goto_next] = buffer.substr(start,i-start);
+                start = i+1;
+                goto_next++;
             }
-            curEntry++;
         }
+        curEntry++;
+    }
 
     obj.close();
 }
 void Score::writeScores(){
     std::fstream write(scoreFile, std::ios::out);
     for(int i=0;i<3;i++){
-    write << scores[i][0] << ";" << scores[i][1] << ";" << "\n";
+        write << scores[i][0] << ";" << scores[i][1] << ";" << "\n";
     }
     write.close();
 }
@@ -67,7 +67,7 @@ void Score::display(){
     }
     EndDrawing();
 }
-void Score::di_scores(){
+void Score::display_scores(){
     handleInput();
     display();
 }

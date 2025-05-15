@@ -23,7 +23,7 @@ int  Grid::getBlockSize(){
     return BlockSize;
 }
 bool Grid::is_game_over(){
-    static bool game_over = 0;
+    bool game_over = 0;
     for (int i = 0; i < 3; i++) {
         for (int j = 1; j < cols-1; j++) {
             if (actual_grid[i][j].value() == 3){

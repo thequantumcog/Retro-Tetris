@@ -2,6 +2,6 @@
 
 int main(){
     GameManager TetrisGame;
-    TetrisGame.game_loop();
+    TetrisGame.run_game();
     return 0;
 }

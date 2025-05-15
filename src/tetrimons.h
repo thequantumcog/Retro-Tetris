@@ -20,7 +20,7 @@ public:
     virtual Piece getNextOrient()=0;
     virtual ~Shape(){};
     bool move(int x, int y);
-    void place();
+    void draw();
     void erase_current();
     void move_down();
     void solidify();
@@ -30,6 +30,7 @@ public:
     void set_speed(int level=1);
     // getters
     bool is_being_dropped();
+    bool operator!();
     bool notPlaceable();
     void reset_gameOver();
     Vector2 * offset();

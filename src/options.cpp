@@ -16,7 +16,7 @@ void Options::reset_btns(){
     back_btn.resetbtn();
     save_btn.resetbtn();
 }
-void Options::di_options(){
+void Options::display_options(){
     input();
     logic();
     draw();

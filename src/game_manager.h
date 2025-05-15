@@ -17,7 +17,7 @@ class GameManager{
     CommonRes * res;
 public:
     GameManager();
-    void game_loop();
+    void run_game();
     ~GameManager();
 };
 #endif

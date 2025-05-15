@@ -22,10 +22,11 @@ class GameOverScreen{
 public:
     GameOverScreen(bool& gotoMenu, bool& reset);
     ~GameOverScreen();
-    std::string getInput();
+    std::string handle_textbox();
     void draw();
     bool isGameOver();
-    void set_GameOver(bool);
+    bool operator!();
+    void set(bool);
     void mouseinput();
     void resetbtns();
 

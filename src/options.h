@@ -27,7 +27,7 @@ class Options{
 public:
     Options(bool &gotoMenu, int * startingLevel, bool * music); 
     void LoadPrev();
-    void di_options();
+    void display_options();
     ~Options();
 
 };

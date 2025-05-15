@@ -2,10 +2,10 @@
 #include "resources.h"
 using namespace std;
 
-Game::Game(bool& Menu, int * startingLevel,Score * score_list):startingLevel(startingLevel), grid(info), backtomenu(Menu){
+Game::Game(bool& menu_status, int * startingLevel,Score * scores):startingLevel(startingLevel), grid(info), backtomenu(menu_status){
     res = new GameRes();
-    gameover_screen = new GameOverScreen(ret,restart);
-    this->score_list = score_list;
+    gameover = new GameOverScreen(ret_menu,restart);
+    this->score_db = scores;
     holding_piece = nullptr;
     current_piece = create_a_random_piece();
     for(int i=0;i<NEXT_PIECES_COUNT;i++) next_pieces_array[i] = create_a_random_piece();
@@ -22,16 +22,16 @@ void Game::run_game(){
     do_initialization();
     int& level = info[2];
     if(current_piece->notPlaceable()){
-        gameover_screen->set_GameOver(1);
+        gameover->set(1);
     }
-    if(!gameover_screen->isGameOver()){
+    if(!*gameover){
         if(grid.level_updates())
             current_piece->set_speed(level);
         if(info[2] > 8){ // agar level 8 se bara tu reset kro
             info[2] = *startingLevel;
             current_piece->set_speed(level);
         } 
-        if(!current_piece->is_being_dropped()){
+        if(!*current_piece){
             drop_next_piece();
             info[0] += 10;
         }
@@ -46,25 +46,25 @@ void Game::reset_after_gameOver(){
     grid.Reset();
     current_piece->reset_gameOver();
     info[0] = 0, info[1] = 0, info[2] = *startingLevel;
-    gameover_screen->set_GameOver(0);
+    gameover->set(0);
     initializationDone = 0;
 }
 void Game::handle_inputs(){
-    if(!gameover_screen->isGameOver()){
+    if(!*gameover){
         game_inputs();
         return;
     } // otherwise game_over wale inputs handle kro
-    gameover_screen->mouseinput();
-    std::string name = gameover_screen->getInput();
+    gameover->mouseinput();
+    std::string name = gameover->handle_textbox();
     if(name != "" && !nameEntered){ 
-        score_list->update(name,info[0]);
+        score_db->update(name,info[0]);
         nameEntered=1;
     }
-    if(ret || restart){
+    if(ret_menu || restart){
         reset_after_gameOver();
-        if(ret){ backtomenu=1; ret=0;}
+        if(ret_menu){ backtomenu=1; ret_menu=0;}
         if (restart){     restart=0;}
-        gameover_screen->resetbtns();
+        gameover->resetbtns();
         nameEntered=0;
     }
 }
@@ -131,7 +131,7 @@ void Game::update_next_pieces(){
     next_pieces_array[2] = create_a_random_piece();
 }
 void Game::draw_info(){
-        Vector2 abs_pos[4];
+        Vector2 abs_pos[4]; // positon fixes for textures
         abs_pos[0] = {1345 + next_pieces_array[0]->offset()[0].x , 150 + next_pieces_array[0] -> offset()[0].y};
         abs_pos[1] = {1345 + next_pieces_array[1]->offset()[1].x , 305 + next_pieces_array[1] -> offset()[1].y};
         abs_pos[2] = {1345 + next_pieces_array[2]->offset()[1].x , 405 + next_pieces_array[2] -> offset()[1].y};
@@ -149,14 +149,14 @@ void Game::draw_info(){
     DrawTextEx(res->font(), to_string(info[0]).c_str(),{1480,910}, 70,0,DarkWhite);
 }
 void Game::draw(){
-    current_piece->place();
+    current_piece->draw();
     BeginDrawing();
     ClearBackground(WHITE);
     DrawTexture(res->Game_Background(), 0, 0, WHITE);
     grid.draw(res->Blocks(),res->Shadow());
     draw_info();
-    if(gameover_screen->isGameOver()){
-        gameover_screen->draw();
+    if(gameover->isGameOver()){
+        gameover->draw();
     }
     EndDrawing();
 }
@@ -164,5 +164,5 @@ Game::~Game(){
     for(int i=0;i<NEXT_PIECES_COUNT;i++) if(next_pieces_array[i]) delete next_pieces_array[i];
     if (current_piece) delete current_piece;
     delete res;
-    delete gameover_screen;
+    delete gameover;
 }

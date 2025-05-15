@@ -19,11 +19,11 @@ void Shape::erase_current(){
 
 // Public Functions
 Shape::Shape(Grid & g): grid(g){
-    correction_values[0] = {0,0};
+    correction_values[0] = {0,0}; // ye texture offsets wali values hain, 
     correction_values[1] = {0,0};
 }
 
-void Shape::place(){
+void Shape::draw(){
     if(dropped){
         yShadow=0;
         while(!would_collide(tetris,0,yShadow+1))
@@ -105,6 +105,9 @@ void Shape::drop_piece(bool drop){
 }
 bool Shape::is_being_dropped(){
     return dropped;
+}
+bool Shape::operator!(){
+    return !dropped;
 }
 Vector2 Shape::pos(){
     return {(float)xShift,(float)yShift};

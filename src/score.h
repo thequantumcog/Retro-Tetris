@@ -16,7 +16,7 @@ class Score{
     void writeScores();
 public:
     Score(bool &Menu);
-    void di_scores();
+    void display_scores();
     void update(const std::string& name, int score);
     ~Score();
 };

@@ -13,7 +13,7 @@ GameManager::GameManager(){
     SeekMusicStream(res->sound(), 25.0f);
 
 }
-void GameManager::game_loop(){
+void GameManager::run_game(){
     bool exitWindow=0;
     PlayMusicStream(res->sound());
     while (!WindowShouldClose() && !exitWindow) {
@@ -26,10 +26,10 @@ void GameManager::game_loop(){
                 game->run_game();
             break;}
         case MenuAction::Score:
-                score_menu->di_scores();
+                score_menu->display_scores();
             break;
         case MenuAction::Options:{
-                options_menu->di_options();
+                options_menu->display_options();
             break;}
         case MenuAction::Exit:
                 exitWindow=1;

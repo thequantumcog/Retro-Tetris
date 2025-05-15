@@ -15,11 +15,11 @@ private:
     Shape * current_piece;
     Shape * holding_piece;
     Shape * next_pieces_array[NEXT_PIECES_COUNT];
-    Score * score_list;
-    GameOverScreen *gameover_screen;
+    Score * score_db;
+    GameOverScreen *gameover;
     bool& backtomenu;
     bool initializationDone=0;
-    bool restart=0, ret=0;
+    bool restart=0, ret_menu=0;
     bool nameEntered=0;
 
     void do_initialization();
