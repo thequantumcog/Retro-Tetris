@@ -29,7 +29,7 @@ A classic Tetris clone written in C++, featuring configurable options, persisten
 
 1. Clone this repo:
    ```bash
-   git clone https://github.com/thequantumcog/OOP-Project.git
+   git clone https://github.com/thequantumcog/Retro-Tetris.git
    cd tetris-game
    ```
 2. Build:
